@@ -1,4 +1,4 @@
-# c2023-挑战班
+# c2023-A班
 
 ## 作业目录
 
@@ -8,7 +8,7 @@
 
 ## 基本操作流程
 
-1. 从 https://github.com/luckymark/c2023-challenge fork 到你自己的 Github 账号中
+1. 从 https://github.com/luckymark/c2023-a fork 到你自己的 Github 账号中
 2. 在Clion中打开项目
    1. 在Clion中注册github账号 https://www.jetbrains.com/help/clion/github.html 
    2. 打开github中的项目 https://www.jetbrains.com/help/clion/manage-projects-hosted-on-github.html 
