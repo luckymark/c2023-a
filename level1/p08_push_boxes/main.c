@@ -3,6 +3,7 @@
 #include<Windows.h>
 #include<string.h>
 #include<stdlib.h>
+#include<time.h>
 #define WIDTH 31
 #define HEIGHT 12
 int score = 100;
@@ -69,6 +70,14 @@ void mgoto(int sx, int sy) {
 }
 void next()
 {
+    FILE* f;
+    f = fopen("score.txt", "w");
+    char ss[4];
+    itoa(score,ss,10);
+    fputs("score:",f);
+    fputs(ss,f);
+    fputs("\n",f);
+    fclose(f);
     system("cls");
     level++;
     printf("score:%d",score);
