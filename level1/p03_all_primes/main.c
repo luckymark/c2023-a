@@ -16,10 +16,17 @@ int main() {
     time(&st_s);
 
     int table[1003] = {};
-    for (int i = 2; i <= 1000; ++i) {
-        if (table[i] == 0) {
-            printf("%d ", i);
-            for (int j = i; j <= 1000; j += i) {
+    printf("2 3 ");
+    for (int i = 6; i <= 1000; i += 6) {
+        if (table[i-1] == 0) {
+            printf("%d ", i-1);
+            for (int j = i-1; j <= 1000; j += i-1) {
+                table[j] = 1;
+            }
+        }
+        if (table[i+1] == 0) {
+            printf("%d ", i+1);
+            for (int j = i+1; j <= 1000; j += i+1) {
                 table[j] = 1;
             }
         }
