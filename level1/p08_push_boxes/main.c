@@ -1,3 +1,4 @@
+//请使用外部控制台，不要用clion带的终端
 #include<stdio.h>
 #include<conio.h>
 #include<Windows.h>

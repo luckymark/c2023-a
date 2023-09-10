@@ -1,6 +1,6 @@
 #include<stdio.h>
 //#include<time.h>
-#define MAX 110
+#define MAX 1100
 int num[MAX];
 int main()
 {
