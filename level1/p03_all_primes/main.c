@@ -10,7 +10,7 @@
 #endif
 
 enum {
-    MAX_NUM = 1000
+    PRIME_MAX_NUM = 1000
 };
 
 int main() {
@@ -19,15 +19,15 @@ int main() {
     ftime(&st_ms);
     time(&st_s);
 
-    int notPrime[MAX_NUM + 3] = {};
-    int prime[MAX_NUM + 3] = {};
+    int notPrime[PRIME_MAX_NUM + 3] = {};
+    int prime[PRIME_MAX_NUM + 3] = {};
     int cnt = 0;
 
-    for (int i = 2; i < MAX_NUM; ++i) {
+    for (int i = 2; i < PRIME_MAX_NUM; ++i) {
         if (!notPrime[i]) {
             prime[cnt++] = i;
         }
-        for (int j = 0; j < cnt && i * prime[j] < MAX_NUM; ++j) {
+        for (int j = 0; j < cnt && i * prime[j] < PRIME_MAX_NUM; ++j) {
             notPrime[i * prime[j]] = 1;
             if (!(i % prime[j]))break;
         }
