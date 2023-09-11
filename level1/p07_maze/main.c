@@ -133,7 +133,7 @@ void init() {
     drawWall();
     prin(CrPos);//打印
 
-    //但是
+    //隐藏光标
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 100;
     info.bVisible = FALSE;
