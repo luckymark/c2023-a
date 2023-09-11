@@ -91,8 +91,11 @@ void Move(int key) {
     COORD tmpCoord;
     switch (key) {
         case 72://上
-            if (inValidMove(CrPos.X, CrPos.Y - 1, Up))break;
-            if (map[CrPos.Y - 1][CrPos.X] == BOX) {
+            if (inValidMove(CrPos.X, CrPos.Y - 1, Up)) {
+                prin("人");
+                break;
+            }
+            if (map[CrPos.Y - 1][CrPos.X/2] == BOX) {
                 tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y - 2;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
@@ -102,8 +105,11 @@ void Move(int key) {
             break;
 
         case 75://左
-            if (inValidMove(CrPos.X - 2, CrPos.Y, Up))break;
-            if (map[CrPos.Y][CrPos.X - 2] == BOX) {
+            if (inValidMove(CrPos.X - 2, CrPos.Y, Up)) {
+                prin("人");
+                break;
+            }
+            if (map[CrPos.Y][(CrPos.X - 1)/2] == BOX) {
                 tmpCoord.X = CrPos.X - 4, tmpCoord.Y = CrPos.Y;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
@@ -113,8 +119,11 @@ void Move(int key) {
             break;
 
         case 77://右
-            if (inValidMove(CrPos.X + 2, CrPos.Y, Up))break;
-            if (map[CrPos.Y][CrPos.X + 2] == BOX) {
+            if (inValidMove(CrPos.X + 2, CrPos.Y, Up)) {
+                prin("人");
+                break;
+            }
+            if (map[CrPos.Y][(CrPos.X + 1)/2] == BOX) {
                 tmpCoord.X = CrPos.X + 4, tmpCoord.Y = CrPos.Y;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
@@ -124,8 +133,11 @@ void Move(int key) {
             break;
 
         case 80://下
-            if (inValidMove(CrPos.X, CrPos.Y + 1, Up))break;
-            if (map[CrPos.Y + 1][CrPos.X] == BOX) {
+            if (inValidMove(CrPos.X, CrPos.Y + 1, Up)) {
+                prin("人");
+                break;
+            }
+            if (map[CrPos.Y + 1][CrPos.X/2] == BOX) {
                 tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y + 2;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
@@ -137,7 +149,6 @@ void Move(int key) {
             break;
     }
 }
-
 
 
 void prin(const char *putChar) {
