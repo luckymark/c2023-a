@@ -3,9 +3,9 @@
 #include <conio.h>
 #include <stdbool.h>
 
-HANDLE console;//´°¿Ú¾ä±ú
-COORD CrPos = {2, 1};//±£´æ¹â±êÐÅÏ¢
-CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;//±£´æ´°¿ÚÐÅÏ¢
+HANDLE console;
+COORD CrPos = {2, 1};
+CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;
 
 enum{
     HIGH = 20,
@@ -38,32 +38,28 @@ int map[20][53]={
 
 void init();
 
-//ÏìÓ¦¼üÅÌÊÂ¼þ
+
 void kbEvent();
 
-//¸üÐÂÓÎÏ·×´Ì¬
+
 void updateStatus();
 
 void drawWall();
 
-//ÅÐ¶ÏÒÆ¶¯ÊÇ·ñºÏ·¨
+
 bool inValidMove(int x, int y);
 
 void win();
 
-//Çå³ýº¯Êý
 void cle(COORD ClPos);
 
-//´òÓ¡º¯Êý
 void prin(COORD PrPos);
 
-//ÒÆ¶¯º¯Êý
 void Move(COORD *MoPos, int key) ;
 
 
 int main() {
     init();
-    //µÈ´ý¼ü°´ÏÂ
     while (1) {
         kbEvent();
         updateStatus();
@@ -100,12 +96,12 @@ void Move(COORD *MoPos, int key) {
 
 void prin(COORD PrPos){
     SetConsoleCursorPosition(console, PrPos);
-    printf("ÈË");
+    printf("äºº");
 }
 
 void cle(COORD ClPos) {
     SetConsoleCursorPosition(console, ClPos);
-    printf(" ");
+    printf("  ");
 }
 
 void updateStatus() {
@@ -121,19 +117,18 @@ void win() {
 
 void kbEvent() {
     if (kbhit()) {
-        cle(CrPos);//Çå³ýÔ­ÓÐÊä³ö
+        cle(CrPos);
         Move(&CrPos, getch());
         prin(CrPos);
     }
 }
 
 void init() {
-    console = GetStdHandle(STD_OUTPUT_HANDLE);//È¡¾ä±ú
+    console = GetStdHandle(STD_OUTPUT_HANDLE);
     GetConsoleScreenBufferInfo(console, &ScreenBufferInfo);
     drawWall();
-    prin(CrPos);//´òÓ¡
+    prin(CrPos);
 
-    //Òþ²Ø¹â±ê
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 100;
     info.bVisible = FALSE;
@@ -145,9 +140,9 @@ void init() {
 void drawWall() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            if(map[i][j]==1)printf("Ç½");
+            if(map[i][j]==1)printf("å¢™");
             if(map[i][j]==0)printf("  ");
-            if(map[i][j]==2)printf("¼Ò");
+            if(map[i][j]==2)printf("å®¶");
         }
         putchar('\n');
     }
