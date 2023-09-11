@@ -148,7 +148,7 @@ void initPerson() {
 }
 
 void readMap() {
-    fp = fopen("1.map", "r");
+    fp = fopen("../../level1/p08_push_boxes/map/1.map", "r");
     fscanf_s(fp,"%d %d", &WIDTH, &HIGH);
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
