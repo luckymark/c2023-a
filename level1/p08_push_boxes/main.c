@@ -46,13 +46,13 @@ bool inValidMove(int x, int y, int dir);
 void win();
 
 //清除函数
-void cle(COORD ClPos);
+void cle();
 
 //打印函数
-void prin(const char* putChar);
+void prin(const char *putChar);
 
 //移动函数
-void Move(COORD *MoPos, int key);
+void Move(int key);
 
 void readMap();
 
@@ -70,49 +70,83 @@ int main() {
 bool inValidMove(int x, int y, int dir) {
     switch (dir) {
         case Up:
-            return map[y][x / 2] == WALL || (map[y][x / 2] == BOX && map[y - 1][x / 2] == ROAD);
+            return map[y][x / 2] == WALL ||
+                   (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
         case Down:
-            return map[y][x / 2] == WALL || (map[y][x / 2] == BOX && map[y + 1][x / 2] == ROAD);
+            return map[y][x / 2] == WALL ||
+                   (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
         case Left:
-            return map[y][x / 2] == WALL || (map[y][x / 2] == BOX && map[y][x / 2 - 1] == ROAD);
+            return map[y][x / 2] == WALL ||
+                   (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
         case Right:
-            return map[y][x / 2] == WALL || (map[y][x / 2] == BOX && map[y][x / 2 + 1] == ROAD);
+            return map[y][x / 2] == WALL ||
+                   (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
         default:
             break;
     }
 }
 
 
-void Move(COORD *MoPos, int key) {
+void Move(int key) {
+    COORD tmpCoord;
     switch (key) {
         case 72://上
-            if (inValidMove(MoPos->X, MoPos->Y - 1, Up))break;
-            MoPos->Y--;
+            if (inValidMove(CrPos.X, CrPos.Y - 1, Up))break;
+            if (map[CrPos.Y - 1][CrPos.X] == BOX) {
+                tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y - 2;
+                SetConsoleCursorPosition(console, tmpCoord);
+                printf("箱");
+            }
+            CrPos.Y -= 1;
+            prin("人");
             break;
+
         case 75://左
-            if (inValidMove(MoPos->X - 2, MoPos->Y, Left))break;
-            MoPos->X -= 2;
+            if (inValidMove(CrPos.X - 2, CrPos.Y, Up))break;
+            if (map[CrPos.Y][CrPos.X - 2] == BOX) {
+                tmpCoord.X = CrPos.X - 4, tmpCoord.Y = CrPos.Y;
+                SetConsoleCursorPosition(console, tmpCoord);
+                printf("箱");
+            }
+            CrPos.X -= 2;
+            prin("人");
             break;
+
         case 77://右
-            if (inValidMove(MoPos->X + 2, MoPos->Y, Right))break;
-            MoPos->X += 2;
+            if (inValidMove(CrPos.X + 2, CrPos.Y, Up))break;
+            if (map[CrPos.Y][CrPos.X + 2] == BOX) {
+                tmpCoord.X = CrPos.X + 4, tmpCoord.Y = CrPos.Y;
+                SetConsoleCursorPosition(console, tmpCoord);
+                printf("箱");
+            }
+            CrPos.X += 2;
+            prin("人");
             break;
+
         case 80://下
-            if (inValidMove(MoPos->X, MoPos->Y + 1, Down))break;
-            MoPos->Y++;
+            if (inValidMove(CrPos.X, CrPos.Y + 1, Up))break;
+            if (map[CrPos.Y + 1][CrPos.X] == BOX) {
+                tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y + 2;
+                SetConsoleCursorPosition(console, tmpCoord);
+                printf("箱");
+            }
+            CrPos.Y += 1;
+            prin("人");
             break;
         default:
             break;
     }
 }
 
-void prin(const char* putChar) {
+
+
+void prin(const char *putChar) {
     SetConsoleCursorPosition(console, CrPos);
     printf("%s", putChar);
 }
 
-void cle(COORD ClPos) {
-    SetConsoleCursorPosition(console, ClPos);
+void cle() {
+    SetConsoleCursorPosition(console, CrPos);
     printf(" ");
 }
 
@@ -128,11 +162,10 @@ void win() {
 }
 
 void kbEvent() {
-    COORD nowPos = {};
     if (kbhit()) {
         //GetNewPos(&nowPos, getch());
-        cle(CrPos);//清除原有输出
-        Move(&CrPos, getch());
+        cle();//清除原有输出
+        Move(getch());
         //prin(CrPos);
     }
 }
