@@ -49,7 +49,7 @@ void win();
 void cle(COORD ClPos);
 
 //打印函数
-void prin(COORD PrPos);
+void prin(const char* putChar);
 
 //移动函数
 void Move(COORD *MoPos, int key);
@@ -57,8 +57,6 @@ void Move(COORD *MoPos, int key);
 void readMap();
 
 void initPerson();
-
-void GetNewPos(COORD *pNewCoord, int key);
 
 int main() {
     init();
@@ -108,9 +106,9 @@ void Move(COORD *MoPos, int key) {
     }
 }
 
-void prin(COORD PrPos) {
-    SetConsoleCursorPosition(console, PrPos);
-    printf("人");
+void prin(const char* putChar) {
+    SetConsoleCursorPosition(console, CrPos);
+    printf("%s", putChar);
 }
 
 void cle(COORD ClPos) {
@@ -139,29 +137,6 @@ void kbEvent() {
     }
 }
 
-void GetNewPos(COORD *pNewCoord, int key) {
-    switch (key) {
-        case 72://上
-            pNewCoord->X = CrPos.X;
-            pNewCoord->Y = CrPos.Y - 1;
-            break;
-        case 75://左
-            pNewCoord->X = CrPos.X - 2;
-            pNewCoord->Y = CrPos.Y;
-            break;
-        case 77://右
-            pNewCoord->X = CrPos.X + 2;
-            pNewCoord->Y = CrPos.Y;
-            break;
-        case 80://下
-            pNewCoord->X = CrPos.X;
-            pNewCoord->Y = CrPos.Y + 1;
-            break;
-        default:
-            break;
-    }
-}
-
 void init() {
     readMap();
     initPerson();
@@ -169,7 +144,7 @@ void init() {
     console = GetStdHandle(STD_OUTPUT_HANDLE);//取句柄
     GetConsoleScreenBufferInfo(console, &ScreenBufferInfo);
     drawWall();
-    prin(CrPos);//打印
+    prin("人");//打印
 
     //隐藏光标
     CONSOLE_CURSOR_INFO info;
@@ -207,7 +182,8 @@ void drawWall() {
         for (int j = 0; j < WIDTH; ++j) {
             if (map[i][j] == WALL)printf("墙");
             if (map[i][j] == ROAD)printf("  ");
-            if (map[i][j] == TARGET)printf("家");
+            if (map[i][j] == TARGET)printf("标");
+            if (map[i][j] == BOX)printf("箱");
         }
         putchar('\n');
     }
