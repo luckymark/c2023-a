@@ -27,8 +27,9 @@ void start()
     y = 2;
     winnum = 0;
     FILE* f;
-    char name[40] = "";
-    strcat(name,"level");
+    char name[100] = "";
+    memset(name,0,sizeof(name));
+    strcat(name,".\\..\\..\\level1\\p08_push_boxes\\level");
     char ss[200];
     itoa(level,ss,10);
     strcat(name,ss);
