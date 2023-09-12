@@ -19,6 +19,7 @@ void move(char a){
         if (right==-1)s_right=0;
         else if (left==-1)s_right=1;
         Sleep(sleep);
+        putchar('\r');
     }
 }
 
