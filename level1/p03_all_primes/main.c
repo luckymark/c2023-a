@@ -15,7 +15,8 @@ int Exam(int n)
 int main()
 {   setbuf(stdout,NULL);
     for(int i = 0;i<1001;i++)
-    {   if(Exam(i))
+    {   
+        if(Exam(i))
             printf("%3d ",i);
     }
     return 0;
