@@ -3,8 +3,10 @@
 int main()
 {   while(1)
     {
-        for (int i = 0; i < 82; i++) {
-            for (int j = 0; j < i; j++) {
+        for (int i = 0; i < 82; i++) 
+        {
+            for (int j = 0; j < i; j++) 
+            {
                 printf(" ");
             }
             printf("word");
