@@ -13,8 +13,10 @@ int main()
             Sleep(50);
             system("cls");
         }
-        for (int i = 82; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
+        for (int i = 82; i > 0; i--) 
+        {
+            for (int j = 0; j < i; j++) 
+            {
                 printf(" ");
             }
             printf("word");
