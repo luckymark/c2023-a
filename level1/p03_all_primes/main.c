@@ -1,23 +1,29 @@
 #include<stdio.h>
+#include<time.h>
 int main()
 {
-    int first=2;
-    int end=1000;
-    int i,j;
-    for(i=first;i<=end;i++)
+time_t start,last;
+start=time(NULL);
+int first=2;
+int end=1000;
+int i,j;
+for(i=first;i<end;i++)
+{
+    int x=i;
+    for(j=2;j<x;j++)
     {
-        int x=i;
-        for(j=2;j<x;j++)
+        if(x%j==0)
         {
-            if(x%j==0)
-            {
 
-                break;
-            }
+            break;
         }
-        if(j==x)
-        {
-            printf("%d\n",j);
-        }
-return 0;
     }
+    if(j==x)
+    {
+        printf("%d\n",j);
+    }
+}
+    last=time(NULL);
+    printf("耗时%f秒", difftime(last,start));
+return 0;
+}
