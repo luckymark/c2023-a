@@ -19,3 +19,5 @@ int main()
         {
             printf("%d\n",j);
         }
+return 0;
+    }
