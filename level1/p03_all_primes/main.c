@@ -1,6 +1,9 @@
 #include<stdio.h>
+#include<time.h>
 int main()
 {
+    time_t start,last;
+    start=time(NULL);
     int first=2;
     int end=1000;
     int i,j;
@@ -19,3 +22,8 @@ int main()
         {
             printf("%d\n",j);
         }
+    }
+    last=time(NULL);
+    printf("耗时%f秒", difftime(last,start));
+    return 0;
+}
