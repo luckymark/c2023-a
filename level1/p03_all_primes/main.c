@@ -4,7 +4,7 @@ int main()
     int first=2;
     int end=1000;
     int i,j;
-    for(i=first;i<end;i++)
+    for(i=first;i<=end;i++)
     {
         int x=i;
         for(j=2;j<x;j++)
