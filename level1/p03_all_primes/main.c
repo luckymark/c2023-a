@@ -24,6 +24,6 @@ for(i=first;i<end;i++)
     }
 }
     last=time(NULL);
-    printf("耗时%f秒", difftime(last,start));
+    printf("耗时%f毫秒", difftime(last,start));
 return 0;
 }
