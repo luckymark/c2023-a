@@ -52,6 +52,9 @@ void win();
 //清除函数
 void cle();
 
+//清屏函数
+void clearScreen();
+
 //打印函数
 void prin(const char *putChar);
 
@@ -124,6 +127,10 @@ void prin(const char *putChar) {
 void cle() {
     SetConsoleCursorPosition(console, CrPos);
     printf(" ");
+}
+
+void clearScreen(){
+    printf("\033[2J");
 }
 
 
