@@ -43,6 +43,7 @@ void drawWall();
 //判断移动是否合法
 bool ValidMove(int x, int y, int dir);
 
+//赢了游戏之后程序的响应
 void win();
 
 //清除函数
@@ -54,22 +55,23 @@ void prin(const char *putChar);
 //移动函数
 void Move(int key);
 
+//读取地图内容
 void readMap();
 
+//初次识别人的位置并存储其位置信息
 void initPerson();
 
+//检测所有的目标都已经清除了
 bool allTargetCleared();
 
 int main() {
     init();
-    //等待键按下
     while (1) {
-        kbEvent();
-        updateStatus();
+        kbEvent(); //响应键盘事件
+        updateStatus(); //对游戏状态更新
     }
 }
 
-//传入的是屏幕坐标
 void init() {
     readMap();
     initPerson();
@@ -110,6 +112,17 @@ void readMap() {
     }
 }
 
+void prin(const char *putChar) {
+    SetConsoleCursorPosition(console, CrPos);
+    printf("%s", putChar);
+}
+
+void cle() {
+    SetConsoleCursorPosition(console, CrPos);
+    printf(" ");
+}
+
+
 void drawWall() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
@@ -122,6 +135,15 @@ void drawWall() {
     }
 }
 
+
+void kbEvent() {
+    if (kbhit()) {
+        //GetNewPos(&nowPos, getch());
+        cle();//清除原有输出
+        Move(getch());
+        //prin(CrPos);
+    }
+}
 
 void Move(int key) {
     COORD tmpCoord;
@@ -207,7 +229,6 @@ void Move(int key) {
     }
 }
 
-
 bool ValidMove(int x, int y, int dir) {
     switch (dir) {
         case Up:
@@ -225,16 +246,6 @@ bool ValidMove(int x, int y, int dir) {
         default:
             break;
     }
-}
-
-void prin(const char *putChar) {
-    SetConsoleCursorPosition(console, CrPos);
-    printf("%s", putChar);
-}
-
-void cle() {
-    SetConsoleCursorPosition(console, CrPos);
-    printf(" ");
 }
 
 void updateStatus() {
@@ -255,13 +266,4 @@ bool allTargetCleared() {
 void win() {
     MessageBox(0, "Congratulation!", "you win!!!!!", 0);
     exit(0);
-}
-
-void kbEvent() {
-    if (kbhit()) {
-        //GetNewPos(&nowPos, getch());
-        cle();//清除原有输出
-        Move(getch());
-        //prin(CrPos);
-    }
 }
