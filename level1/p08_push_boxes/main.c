@@ -6,7 +6,7 @@
 HANDLE console;//窗口句柄
 COORD CrPos = {};//保存光标信息
 CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;//保存窗口信息
-
+COORD ZERO_COORD = {0, 0};
 
 enum {
     PERSON = 6,
@@ -33,13 +33,13 @@ int stepCC;
 //文件
 FILE *fp = NULL;
 
-void init();
+void gameInit();
 
 //响应键盘事件
 void kbEvent();
 
 //更新游戏状态
-void updateStatus();
+bool gameStatusIsNotStop();
 
 void drawWall();
 
@@ -71,14 +71,17 @@ void initPerson();
 bool allTargetCleared();
 
 int main() {
-    init();
-    while (1) {
-        kbEvent(); //响应键盘事件
-        updateStatus(); //对游戏状态更新
+    while(1){
+        gameInit();
+        //对游戏状态更新
+        while (gameStatusIsNotStop()) {
+            kbEvent(); //响应键盘事件
+        }
     }
 }
 
-void init() {
+void gameInit() {
+    clearScreen();
     readMap();
     initPerson();
 
@@ -130,7 +133,8 @@ void cle() {
 }
 
 void clearScreen(){
-    printf("\033[2J");
+    SetConsoleCursorPosition(console, ZERO_COORD);
+    system("cls");
 }
 
 
@@ -263,10 +267,12 @@ bool ValidMove(int x, int y, int dir) {
     }
 }
 
-void updateStatus() {
+bool gameStatusIsNotStop() {
     if (allTargetCleared()) {
         win();
+        return false;
     }
+    return true;
 }
 
 bool allTargetCleared() {
@@ -282,5 +288,5 @@ void win() {
     char message[100];
     sprintf(message, "Your Step: %d", stepCC);
     MessageBox(0, message, "you win!!!!!", 0);
-    exit(0);
+    //exit(0);
 }
