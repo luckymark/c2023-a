@@ -70,22 +70,55 @@ int main() {
 }
 
 //传入的是屏幕坐标
-bool ValidMove(int x, int y, int dir) {
-    switch (dir) {
-        case Up:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
-                   (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
-        case Down:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
-                   (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
-        case Left:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
-                   (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
-        case Right:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
-                   (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
-        default:
-            break;
+void init() {
+    readMap();
+    initPerson();
+
+    console = GetStdHandle(STD_OUTPUT_HANDLE);//取句柄
+    GetConsoleScreenBufferInfo(console, &ScreenBufferInfo);
+    drawWall();
+    prin("人");//打印
+
+    //隐藏光标
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(console, &info);
+
+
+}
+
+void initPerson() {
+    for (int i = 0; i < HIGH; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
+            if (map[i][j] == PERSON) {
+                CrPos.X = j * 2;
+                CrPos.Y = i;
+                map[i][j] = ROAD;
+            }
+        }
+    }
+}
+
+void readMap() {
+    fp = fopen("../../level1/p08_push_boxes/map/1.map", "r");
+    fscanf_s(fp, "%d %d", &WIDTH, &HIGH);
+    for (int i = 0; i < HIGH; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
+            fscanf_s(fp, "%d", &map[i][j]);
+        }
+    }
+}
+
+void drawWall() {
+    for (int i = 0; i < HIGH; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
+            if (map[i][j] == WALL)printf("墙");
+            if (map[i][j] == ROAD)printf("  ");
+            if (map[i][j] == TARGET)printf("标");
+            if (map[i][j] == BOX)printf("箱");
+        }
+        putchar('\n');
     }
 }
 
@@ -175,6 +208,25 @@ void Move(int key) {
 }
 
 
+bool ValidMove(int x, int y, int dir) {
+    switch (dir) {
+        case Up:
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+                   (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
+        case Down:
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+                   (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
+        case Left:
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+                   (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
+        case Right:
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+                   (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
+        default:
+            break;
+    }
+}
+
 void prin(const char *putChar) {
     SetConsoleCursorPosition(console, CrPos);
     printf("%s", putChar);
@@ -211,57 +263,5 @@ void kbEvent() {
         cle();//清除原有输出
         Move(getch());
         //prin(CrPos);
-    }
-}
-
-void init() {
-    readMap();
-    initPerson();
-
-    console = GetStdHandle(STD_OUTPUT_HANDLE);//取句柄
-    GetConsoleScreenBufferInfo(console, &ScreenBufferInfo);
-    drawWall();
-    prin("人");//打印
-
-    //隐藏光标
-    CONSOLE_CURSOR_INFO info;
-    info.dwSize = 100;
-    info.bVisible = FALSE;
-    SetConsoleCursorInfo(console, &info);
-
-
-}
-
-void initPerson() {
-    for (int i = 0; i < HIGH; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            if (map[i][j] == PERSON) {
-                CrPos.X = j * 2;
-                CrPos.Y = i;
-                map[i][j] = ROAD;
-            }
-        }
-    }
-}
-
-void readMap() {
-    fp = fopen("../../level1/p08_push_boxes/map/1.map", "r");
-    fscanf_s(fp, "%d %d", &WIDTH, &HIGH);
-    for (int i = 0; i < HIGH; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            fscanf_s(fp, "%d", &map[i][j]);
-        }
-    }
-}
-
-void drawWall() {
-    for (int i = 0; i < HIGH; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            if (map[i][j] == WALL)printf("墙");
-            if (map[i][j] == ROAD)printf("  ");
-            if (map[i][j] == TARGET)printf("标");
-            if (map[i][j] == BOX)printf("箱");
-        }
-        putchar('\n');
     }
 }
