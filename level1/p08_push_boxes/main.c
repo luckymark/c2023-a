@@ -27,6 +27,9 @@ int HIGH = 20, WIDTH = 53;
 
 int map[20][53];
 
+//记录用户移动步数
+int stepCC;
+
 //文件
 FILE *fp = NULL;
 
@@ -87,7 +90,8 @@ void init() {
     info.bVisible = FALSE;
     SetConsoleCursorInfo(console, &info);
 
-
+    //清空步数
+    stepCC = 0;
 }
 
 void initPerson() {
@@ -166,6 +170,7 @@ void Move(int key) {
             }
             CrPos.Y -= 1;
             prin("人");
+            stepCC++;
             break;
 
         case 75://左
@@ -185,6 +190,7 @@ void Move(int key) {
             }
             CrPos.X -= 2;
             prin("人");
+            stepCC++;
             break;
 
         case 77://右
@@ -204,6 +210,7 @@ void Move(int key) {
             }
             CrPos.X += 2;
             prin("人");
+            stepCC++;
             break;
 
         case 80://下
@@ -223,6 +230,7 @@ void Move(int key) {
             }
             CrPos.Y += 1;
             prin("人");
+            stepCC++;
             break;
         default:
             break;
@@ -264,6 +272,8 @@ bool allTargetCleared() {
 }
 
 void win() {
-    MessageBox(0, "Congratulation!", "you win!!!!!", 0);
+    char message[100];
+    sprintf(message, "Your Step: %d", stepCC);
+    MessageBox(0, message, "you win!!!!!", 0);
     exit(0);
 }
