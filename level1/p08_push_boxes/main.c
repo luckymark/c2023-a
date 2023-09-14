@@ -58,6 +58,8 @@ void readMap();
 
 void initPerson();
 
+bool allTargetCleared();
+
 int main() {
     init();
     //等待键按下
@@ -71,16 +73,16 @@ int main() {
 bool ValidMove(int x, int y, int dir) {
     switch (dir) {
         case Up:
-            return map[y][x / 2] == ROAD ||
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
         case Down:
-            return map[y][x / 2] == ROAD ||
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
         case Left:
-            return map[y][x / 2] == ROAD ||
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
         case Right:
-            return map[y][x / 2] == ROAD ||
+            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
         default:
             break;
@@ -103,6 +105,10 @@ void Move(int key) {
                 map[CrPos.Y - 2][CrPos.X / 2] = BOX;
                 map[CrPos.Y - 1][CrPos.X / 2] = ROAD;
             }
+            //检查是否是原来占着标的位置
+            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+                prin("标");
+            }
             CrPos.Y -= 1;
             prin("人");
             break;
@@ -118,6 +124,9 @@ void Move(int key) {
                 printf("箱");
                 map[CrPos.Y][(CrPos.X - 2) / 2] = ROAD;
                 map[CrPos.Y][(CrPos.X - 4) / 2] = BOX;
+            }
+            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+                prin("标");
             }
             CrPos.X -= 2;
             prin("人");
@@ -135,6 +144,9 @@ void Move(int key) {
                 map[CrPos.Y][(CrPos.X + 2) / 2] = ROAD;
                 map[CrPos.Y][(CrPos.X + 4) / 2] = BOX;
             }
+            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+                prin("标");
+            }
             CrPos.X += 2;
             prin("人");
             break;
@@ -150,6 +162,9 @@ void Move(int key) {
                 printf("箱");
                 map[CrPos.Y + 2][CrPos.X / 2] = BOX;
                 map[CrPos.Y + 1][CrPos.X / 2] = ROAD;
+            }
+            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+                prin("标");
             }
             CrPos.Y += 1;
             prin("人");
@@ -171,9 +186,18 @@ void cle() {
 }
 
 void updateStatus() {
-    if (map[CrPos.Y][CrPos.X / 2] == TARGET) {
+    if (allTargetCleared()) {
         win();
     }
+}
+
+bool allTargetCleared() {
+    for (int i = 0; i < HIGH; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
+            if(map[i][j]==TARGET) return false;
+        }
+    }
+    return true;
 }
 
 void win() {
