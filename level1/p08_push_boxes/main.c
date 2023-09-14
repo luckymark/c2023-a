@@ -41,7 +41,7 @@ void updateStatus();
 void drawWall();
 
 //判断移动是否合法
-bool inValidMove(int x, int y, int dir);
+bool ValidMove(int x, int y, int dir);
 
 void win();
 
@@ -67,19 +67,20 @@ int main() {
     }
 }
 
-bool inValidMove(int x, int y, int dir) {
+//传入的是屏幕坐标
+bool ValidMove(int x, int y, int dir) {
     switch (dir) {
         case Up:
-            return map[y][x / 2] == WALL ||
+            return map[y][x / 2] == ROAD ||
                    (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
         case Down:
-            return map[y][x / 2] == WALL ||
+            return map[y][x / 2] == ROAD ||
                    (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
         case Left:
-            return map[y][x / 2] == WALL ||
+            return map[y][x / 2] == ROAD ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
         case Right:
-            return map[y][x / 2] == WALL ||
+            return map[y][x / 2] == ROAD ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
         default:
             break;
@@ -91,56 +92,64 @@ void Move(int key) {
     COORD tmpCoord;
     switch (key) {
         case 72://上
-            if (inValidMove(CrPos.X, CrPos.Y - 1, Up)) {
+            if (!ValidMove(CrPos.X, CrPos.Y - 1, Up)) {
                 prin("人");
                 break;
             }
-            if (map[CrPos.Y - 1][CrPos.X/2] == BOX) {
+            if (map[CrPos.Y - 1][CrPos.X / 2] == BOX) {
                 tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y - 2;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
+                map[CrPos.Y - 2][CrPos.X / 2] = BOX;
+                map[CrPos.Y - 1][CrPos.X / 2] = ROAD;
             }
             CrPos.Y -= 1;
             prin("人");
             break;
 
         case 75://左
-            if (inValidMove(CrPos.X - 2, CrPos.Y, Up)) {
+            if (!ValidMove(CrPos.X - 2, CrPos.Y, Left)) {
                 prin("人");
                 break;
             }
-            if (map[CrPos.Y][(CrPos.X - 1)/2] == BOX) {
+            if (map[CrPos.Y][(CrPos.X - 2) / 2] == BOX) {
                 tmpCoord.X = CrPos.X - 4, tmpCoord.Y = CrPos.Y;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
+                map[CrPos.Y][(CrPos.X - 2) / 2] = ROAD;
+                map[CrPos.Y][(CrPos.X - 4) / 2] = BOX;
             }
             CrPos.X -= 2;
             prin("人");
             break;
 
         case 77://右
-            if (inValidMove(CrPos.X + 2, CrPos.Y, Up)) {
+            if (!ValidMove(CrPos.X + 2, CrPos.Y, Right)) {
                 prin("人");
                 break;
             }
-            if (map[CrPos.Y][(CrPos.X + 1)/2] == BOX) {
+            if (map[CrPos.Y][(CrPos.X + 2) / 2] == BOX) {
                 tmpCoord.X = CrPos.X + 4, tmpCoord.Y = CrPos.Y;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
+                map[CrPos.Y][(CrPos.X + 2) / 2] = ROAD;
+                map[CrPos.Y][(CrPos.X + 4) / 2] = BOX;
             }
             CrPos.X += 2;
             prin("人");
             break;
 
         case 80://下
-            if (inValidMove(CrPos.X, CrPos.Y + 1, Up)) {
+            if (!ValidMove(CrPos.X, CrPos.Y + 1, Down)) {
                 prin("人");
                 break;
             }
-            if (map[CrPos.Y + 1][CrPos.X/2] == BOX) {
+            if (map[CrPos.Y + 1][CrPos.X / 2] == BOX) {
                 tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y + 2;
                 SetConsoleCursorPosition(console, tmpCoord);
                 printf("箱");
+                map[CrPos.Y + 2][CrPos.X / 2] = BOX;
+                map[CrPos.Y + 1][CrPos.X / 2] = ROAD;
             }
             CrPos.Y += 1;
             prin("人");
