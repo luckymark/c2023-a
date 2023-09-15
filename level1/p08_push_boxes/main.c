@@ -148,25 +148,8 @@ void clearScreen() {
 void drawMap() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            if (map[i][j] & WALL) {
-                printf("墙");
-                continue;
-            }
-            if (map[i][j] & BOX) {
-                printf("箱");
-                continue;
-            }
-            if (map[i][j] & TARGET) {
-                printf("标");
-                continue;
-            }
-            if (map[i][j] & PERSON) {
-                printf("人");
-                continue;
-            }
-            printf("  ");
+            updateCoord(j, i);
         }
-        putchar('\n');
     }
 }
 
@@ -259,23 +242,24 @@ void Move(int key) {
 void updateCoord(int x_map, int y_map) {
     COORD tmpCoord = {x_map * 2, y_map};
     SetConsoleCursorPosition(console, tmpCoord);
+    if (map[y_map][x_map] & TARGET) printf("\033[40;32m");
     if (map[y_map][x_map] & WALL) {
-        printf("墙");
+        printf("墙\033[0m");
         return;
     }
     if (map[y_map][x_map] & BOX) {
-        printf("箱");
+        printf("箱\033[0m");
         return;
     }
     if (map[y_map][x_map] & PERSON) {
-        printf("人");
+        printf("人\033[0m");
         return;
     }
     if (map[y_map][x_map] & TARGET) {
-        printf("标");
+        printf("标\033[0m");
         return;
     }
-    printf("  ");
+    printf("  \033[0m");
 }
 
 bool invalidMove(int x, int y, int dir) {
