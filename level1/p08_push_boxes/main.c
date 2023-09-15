@@ -30,6 +30,9 @@ int map[20][53];
 //记录用户移动步数
 int stepCC;
 
+//目标关卡
+int targetLevel;
+
 //文件
 FILE *fp = NULL;
 
@@ -70,8 +73,12 @@ void initPerson();
 //检测所有的目标都已经清除了
 bool allTargetCleared();
 
+void printMenu();
+
 int main() {
     while(1){
+        clearScreen();
+        printMenu();
         gameInit();
         //对游戏状态更新
         while (gameStatusIsNotStop()) {
@@ -80,7 +87,21 @@ int main() {
     }
 }
 
+void printMenu() {
+    printf("请输入想挑战的关卡:");
+    scanf_s("%d", &targetLevel);
+    if (!(targetLevel >= 1 && targetLevel <= 10)) {
+        fprintf_s(stderr, "输入了不合法的数字");
+        exit(EXIT_FAILURE);
+    }
+}
+
 void gameInit() {
+    //清空地图存档
+    memset(map, 0, sizeof(map));
+    //清空步数
+    stepCC = 0;
+
     clearScreen();
     readMap();
     initPerson();
@@ -96,8 +117,6 @@ void gameInit() {
     info.bVisible = FALSE;
     SetConsoleCursorInfo(console, &info);
 
-    //清空步数
-    stepCC = 0;
 }
 
 void initPerson() {
@@ -113,7 +132,9 @@ void initPerson() {
 }
 
 void readMap() {
-    fp = fopen("../../level1/p08_push_boxes/map/1.map", "r");
+    char fileDir[30];
+    sprintf(fileDir,"../../level1/p08_push_boxes/map/%d.map", targetLevel);
+    fp = fopen(fileDir, "r");
     fscanf_s(fp, "%d %d", &WIDTH, &HIGH);
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
