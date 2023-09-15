@@ -9,11 +9,11 @@ CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;//保存窗口信息
 COORD ZERO_COORD = {0, 0};
 
 enum {
-    PERSON = 6,
-    WALL = 1,
     ROAD = 0,
-    TARGET = 2,
-    BOX = 3
+    WALL = 1 << 0,
+    TARGET = 1 << 1,
+    BOX = 1 << 2,
+    PERSON = 1 << 3
 };
 
 enum {
@@ -76,7 +76,7 @@ bool allTargetCleared();
 void printMenu();
 
 int main() {
-    while(1){
+    while (1) {
         clearScreen();
         printMenu();
         gameInit();
@@ -122,10 +122,10 @@ void gameInit() {
 void initPerson() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            if (map[i][j] == PERSON) {
+            if (map[i][j] & PERSON) {
                 CrPos.X = j * 2;
                 CrPos.Y = i;
-                map[i][j] = ROAD;
+                //map[i][j] &= ~WALL;
             }
         }
     }
@@ -133,7 +133,7 @@ void initPerson() {
 
 void readMap() {
     char fileDir[30];
-    sprintf(fileDir,"../../level1/p08_push_boxes/map/%d.map", targetLevel);
+    sprintf(fileDir, "../../level1/p08_push_boxes/map/%d.map", targetLevel);
     fp = fopen(fileDir, "r");
     fscanf_s(fp, "%d %d", &WIDTH, &HIGH);
     for (int i = 0; i < HIGH; ++i) {
@@ -153,7 +153,7 @@ void cle() {
     printf(" ");
 }
 
-void clearScreen(){
+void clearScreen() {
     SetConsoleCursorPosition(console, ZERO_COORD);
     system("cls");
 }
@@ -162,10 +162,13 @@ void clearScreen(){
 void drawWall() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            if (map[i][j] == WALL)printf("墙");
-            if (map[i][j] == ROAD)printf("  ");
-            if (map[i][j] == TARGET)printf("标");
-            if (map[i][j] == BOX)printf("箱");
+            if (map[i][j] & WALL)printf("墙");
+            if (map[i][j] & BOX) {
+                printf("箱");
+                continue;
+            }
+            if (map[i][j] & TARGET)printf("标");
+            printf("  ");
         }
         putchar('\n');
     }
@@ -189,15 +192,19 @@ void Move(int key) {
                 prin("人");
                 break;
             }
-            if (map[CrPos.Y - 1][CrPos.X / 2] == BOX) {
+            //如果上面一格的是箱子
+            if (map[CrPos.Y - 1][CrPos.X / 2] & BOX) {
+                //移动光标到上两格处
                 tmpCoord.X = CrPos.X, tmpCoord.Y = CrPos.Y - 2;
                 SetConsoleCursorPosition(console, tmpCoord);
+                //在那里标下箱子
                 printf("箱");
+                //
                 map[CrPos.Y - 2][CrPos.X / 2] = BOX;
                 map[CrPos.Y - 1][CrPos.X / 2] = ROAD;
             }
             //检查是否是原来占着标的位置
-            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+            if (map[CrPos.Y][CrPos.X / 2] == TARGET) {
                 prin("标");
             }
             CrPos.Y -= 1;
@@ -217,7 +224,7 @@ void Move(int key) {
                 map[CrPos.Y][(CrPos.X - 2) / 2] = ROAD;
                 map[CrPos.Y][(CrPos.X - 4) / 2] = BOX;
             }
-            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+            if (map[CrPos.Y][CrPos.X / 2] == TARGET) {
                 prin("标");
             }
             CrPos.X -= 2;
@@ -237,7 +244,7 @@ void Move(int key) {
                 map[CrPos.Y][(CrPos.X + 2) / 2] = ROAD;
                 map[CrPos.Y][(CrPos.X + 4) / 2] = BOX;
             }
-            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+            if (map[CrPos.Y][CrPos.X / 2] == TARGET) {
                 prin("标");
             }
             CrPos.X += 2;
@@ -257,7 +264,7 @@ void Move(int key) {
                 map[CrPos.Y + 2][CrPos.X / 2] = BOX;
                 map[CrPos.Y + 1][CrPos.X / 2] = ROAD;
             }
-            if(map[CrPos.Y][CrPos.X/2]==TARGET){
+            if (map[CrPos.Y][CrPos.X / 2] == TARGET) {
                 prin("标");
             }
             CrPos.Y += 1;
@@ -272,16 +279,16 @@ void Move(int key) {
 bool ValidMove(int x, int y, int dir) {
     switch (dir) {
         case Up:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+            return map[y][x / 2] == ROAD || map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y - 1][x / 2] == ROAD || map[y - 1][x / 2] == TARGET));
         case Down:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+            return map[y][x / 2] == ROAD || map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y + 1][x / 2] == ROAD || map[y + 1][x / 2] == TARGET));
         case Left:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+            return map[y][x / 2] == ROAD || map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 - 1] == ROAD || map[y][x / 2 - 1] == TARGET));
         case Right:
-            return map[y][x / 2] == ROAD ||map[y][x / 2] == TARGET ||
+            return map[y][x / 2] == ROAD || map[y][x / 2] == TARGET ||
                    (map[y][x / 2] == BOX && (map[y][x / 2 + 1] == ROAD || map[y][x / 2 + 1] == TARGET));
         default:
             break;
@@ -299,7 +306,7 @@ bool gameStatusIsNotStop() {
 bool allTargetCleared() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            if(map[i][j]==TARGET) return false;
+            if (map[i][j] == TARGET) return false;
         }
     }
     return true;
