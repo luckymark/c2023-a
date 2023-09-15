@@ -295,9 +295,23 @@ bool allTargetCleared() {
 }
 
 void win() {
+    char scoreFile[100] = "../../level1/p08_push_boxes/score.table";
+    FILE *fsm = fopen(scoreFile, "r");
+    int scoreTable[10] ;
+    memset(scoreTable,0x7f,sizeof scoreTable);
+    for (int i = 0; i < 2; ++i) {
+        fscanf_s(fsm,"%d",&scoreTable[i]);
+    }
+
     char message[100];
-    sprintf(message, "Your Step: %d", stepCC);
+    scoreTable[targetLevel-1] = min(scoreTable[targetLevel-1], stepCC);
+    sprintf(message, "Your Step: %d\nBest score: %d", stepCC, scoreTable[targetLevel-1]);
     MessageBox(0, message, "you win!!!!!", 0);
+    fsm = fopen(scoreFile, "w");
+    for (int i = 0; i < 2; ++i) {
+        fprintf(fsm,"%d\n", scoreTable[i]);
+    }
+    fclose(fsm);
 }
 
 #pragma clang diagnostic pop
