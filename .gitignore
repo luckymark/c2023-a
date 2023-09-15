@@ -2,3 +2,5 @@
 /cmake-build-debug/
 
 *.exe
+sqlite-source-code
+*.h

@@ -7,7 +7,7 @@ void Euler(int, int[]);//欧拉筛法
 int main() {
     int n;
     scanf("%d", &n);
-    static int out[MAX_SIZE] = {2};
+    static int out[MAX_SIZE] = {};
     clock_t s, e;
     s=clock();
     Euler(n, out);
@@ -18,10 +18,9 @@ int main() {
 }
 
 void Euler(int n, int prime[]){
-    static char is_not_prime[MAX_SIZE] = {1, 1, 0};
-//    int prime[MAX_SIZE] = {2};
-    int cnt = 1;
-    for(int i=3;i<=n;i++){
+    static char is_not_prime[MAX_SIZE] = {1, 1,};
+    int cnt = 0;
+    for(int i=2;i<=n;i++){
         if (!is_not_prime[i]) { prime[cnt] = i;cnt++ ;}
         for(int j=0;j<cnt&&i*prime[j]<=n;++j){
             is_not_prime[i*prime[j]] = 1;
