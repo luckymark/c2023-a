@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
@@ -9,7 +12,6 @@ CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;//保存窗口信息
 COORD ZERO_COORD = {0, 0};
 
 enum {
-    ROAD = 0,
     WALL = 1 << 0,
     TARGET = 1 << 1,
     BOX = 1 << 2,
@@ -52,14 +54,8 @@ bool invalidMove(int x, int y, int dir);
 //赢了游戏之后程序的响应
 void win();
 
-//清除函数
-void cle();
-
 //清屏函数
 void clearScreen();
-
-//打印函数
-void prin(const char *putChar);
 
 //移动函数
 void Move(int key);
@@ -141,16 +137,6 @@ void readMap() {
             fscanf_s(fp, "%d", &map[i][j]);
         }
     }
-}
-
-void prin(const char *putChar) {
-    SetConsoleCursorPosition(console, pPos);
-    printf("%s", putChar);
-}
-
-void cle() {
-    SetConsoleCursorPosition(console, pPos);
-    printf(" ");
 }
 
 void clearScreen() {
@@ -328,5 +314,6 @@ void win() {
     char message[100];
     sprintf(message, "Your Step: %d", stepCC);
     MessageBox(0, message, "you win!!!!!", 0);
-    //exit(0);
 }
+
+#pragma clang diagnostic pop
