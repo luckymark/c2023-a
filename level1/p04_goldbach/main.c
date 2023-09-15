@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
+/*
+ * 输入一个数来拆分成三个质数之和，输出是所有解（至少我认为）
+ * 100以内肯定没问题啦
+ * 更大的我不想写优化（就是菜，不会写qaq）
+ */
 int p[1001],n,pr[1001],cnt=0;
 void prime(int a){
     for(int i=a*2;i<=n;i+=a) p[i]=0;
@@ -19,7 +24,7 @@ int main() {
     temp=(n-3)/2;
     if(!p[temp])
         while(!p[temp])
-            temp+=2;
+            temp++;
     for(int i=2;i<=cnt;i++)
         if(pr[i]==temp){
             temp=i;
