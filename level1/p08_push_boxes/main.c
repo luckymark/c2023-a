@@ -88,10 +88,10 @@ int main() {
 }
 
 void printMenu() {
-    printf("请输入想挑战的关卡:");
+    printf("请输入想挑战的关卡(1~2):");
     scanf_s("%d", &targetLevel);
-    if (!(targetLevel >= 1 && targetLevel <= 10)) {
-        fprintf_s(stderr, "输入了不合法的数字");
+    if (!(targetLevel >= 1 && targetLevel <= 2)) {
+        MessageBox(0, "输入了不合法的数字", "即将退出", 0);
         exit(EXIT_FAILURE);
     }
 }
