@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 HANDLE console;
-COORD CrPos = {2, 1};
+COORD pPos = {2, 1};
 CONSOLE_SCREEN_BUFFER_INFO ScreenBufferInfo;
 
 enum{
@@ -44,7 +44,7 @@ void kbEvent();
 
 void updateStatus();
 
-void drawWall();
+void drawMap();
 
 
 bool inValidMove(int x, int y);
@@ -105,7 +105,7 @@ void cle(COORD ClPos) {
 }
 
 void updateStatus() {
-    if(map[CrPos.Y][CrPos.X/2]==2) {
+    if(map[pPos.Y][pPos.X / 2] == 2) {
         win();
     }
 }
@@ -117,17 +117,17 @@ void win() {
 
 void kbEvent() {
     if (kbhit()) {
-        cle(CrPos);
-        Move(&CrPos, getch());
-        prin(CrPos);
+        cle(pPos);
+        Move(&pPos, getch());
+        prin(pPos);
     }
 }
 
 void init() {
     console = GetStdHandle(STD_OUTPUT_HANDLE);
     GetConsoleScreenBufferInfo(console, &ScreenBufferInfo);
-    drawWall();
-    prin(CrPos);
+    drawMap();
+    prin(pPos);
 
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 100;
@@ -137,7 +137,7 @@ void init() {
 
 }
 
-void drawWall() {
+void drawMap() {
     for (int i = 0; i < HIGH; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
             if(map[i][j]==1)printf("墙");
