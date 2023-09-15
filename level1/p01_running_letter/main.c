@@ -6,7 +6,7 @@
 
 void move(char a){
     int left=0,right=len-1;
-    boolean s_right=1;
+    char s_right=1;
     for(;;){
         for(int i=0;i<left;i++)putchar(sep);
         putchar(a);
@@ -16,8 +16,8 @@ void move(char a){
         }else{
             left--;right++;
         }
-        if (right==-1)s_right=0;
-        else if (left==-1)s_right=1;
+        if (right==0)s_right=0;
+        else if (left==0)s_right=1;
         Sleep(sleep);
         putchar('\r');
     }
