@@ -2,8 +2,8 @@
 #include<time.h>
 int main()
 {
-time_t start,last;
-start=time(NULL);
+int start,last;
+start=clock();
 int first=2;
 int end=1000;
 int i,j;
@@ -23,7 +23,7 @@ for(i=first;i<end;i++)
         printf("%d\n",j);
     }
 }
-    last=time(NULL);
-    printf("耗时%f毫秒", difftime(last,start));
+    last=clock();
+    printf("耗时%d毫秒",last-start);
 return 0;
 }
