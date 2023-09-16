@@ -1,9 +1,10 @@
 #include<stdio.h>
 #include<time.h>
+#include<windows.h>
 int main()
 {
-    time_t start,last;
-    start=time(NULL);
+  int start,last;
+    start=clock();
     int first=2;
     int end=1000;
     int i,j;
@@ -23,7 +24,8 @@ int main()
             printf("%d\n",j);
         }
     }
-    last=time(NULL);
-    printf("耗时%f秒", difftime(last,start));
+    Sleep(10);
+    last=clock();
+    printf("%dms", last-start);
     return 0;
 }
