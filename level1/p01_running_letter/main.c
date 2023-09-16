@@ -1,22 +1,20 @@
-#include<stdio.h>
-int main(){
-    int i,x;
-    scanf("%d",&x);
-    for(i=2;i<x;i++)
+#include <stdio.h>
+#include<windows.h>
+int main() {
+    setbuf(stdout,NULL);
+    printf("A");
+    int i,j;
+    for(i=0;i<262;i++)
     {
-        if(x%i==0)
-        {
-            break;
-        }
+        Sleep(50);
+        printf("\b A");
+
     }
-    if(i==x)
+    for(j=0;j<262;j++)
     {
-        printf("是素数");
-    }else
-    {
-        printf("不是素数");
+        Sleep(50);
+        printf("\b\bA");
     }
 
     return 0;
 }
-
