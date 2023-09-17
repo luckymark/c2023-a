@@ -6,8 +6,7 @@ char* encrypt(char *_clear);
 char* decrypt(char *_cypher);
 char* getstring();
 
-//这个程序有内存问题，暂时还不会解决。
-//没有实现任意长度输入。
+
 int main() {
     printf("Enter the clear text which you want to encrypt:");
     char *clear = getstring();
@@ -24,7 +23,7 @@ int main() {
     return 0;
 }
 
-//wrong and unfinished.
+
 char* encrypt(char *_clear){
     int len = (int)(strlen(_clear) + 1);
     char *cypher = (char*)malloc(len);
@@ -44,7 +43,7 @@ char* decrypt(char *_cypher){
     }
     return clear;
 }
-//获取输入内容的函数。速度慢，当输入字符串较长时会出现内存问题。刚了解动态内存分配，目前不会解决。
+
 char* getstring(){
     char *str = NULL;
     char *str_temp = NULL;
@@ -52,6 +51,7 @@ char* getstring(){
     str = (char*)malloc((i+1)*sizeof(char));
     while ( '\n' != (str[i-1] = getwchar()) ){
         i++;
+        str[i-1] = '\0';
         str_temp = (char*)malloc(strlen(str) + 1);
         strcpy(str_temp,str);
         free(str);
@@ -64,6 +64,6 @@ char* getstring(){
         strcpy(str,str_temp);
         free(str_temp);
     }
-    str[i-1] = '\0';
+    str[i-1] = '\0';//替换\n为\0。
     return str;
 }
