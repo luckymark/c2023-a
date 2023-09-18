@@ -28,33 +28,67 @@ void paintMAze() {
         printf("\n");
     }
 }
+void move(char direction) {
+    switch (direction) {
+        case 'u':
+            if (Map[player_x - 1][player_y] != '#') {
+                system("cls");
+                player_x--;
+                paintMAze();
+            }
+            break;
+        case 'd':
+            if (Map[player_x + 1][player_y] != '#') {
+                system("cls");
+                player_x++;
+                paintMAze();
+            }
+            break;
+        case 'r':
+            if (Map[player_x][player_y - 1] != '#') {
+                system("cls");
+                player_y--;
+                paintMAze();
+            }
+            break;
+        case 'l':
+            if (Map[player_x][player_y + 1] != '#') {
+                system("cls");
+                player_y++;
+                paintMAze();
+            }
+            break;
+    }
+}
+int is_win() {
+    if(Map[player_x][player_y] == '@') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 int main() {
     paintMAze();
     while (1) {
-        if (Map[player_x][player_y] == '@') {
+        if (is_win()) {
             printf("You won!!!");
             return 0;
         }
         char press = getch();
-        if (press == 'w' && Map[player_x - 1][player_y] != '#') {
-            system("cls");
-            player_x--;
-            paintMAze();
+        switch (press) {
+            case 'w':
+                move('u');
+                break;
+            case 's':
+                move('d');
+                break;
+            case 'a':
+                move('r');
+                break;
+            case 'd':
+                move('l');
+                break;
         }
-        if (press == 's' && Map[player_x + 1][player_y] != '#') {
-            system("cls");
-            player_x++;
-            paintMAze();
-        }
-        if (press == 'a' && Map[player_x][player_y - 1] != '#') {
-            system("cls");
-            player_y--;
-            paintMAze();
-        }
-        if (press == 'd' && Map[player_x][player_y + 1] != '#') {
-            system("cls");
-            player_y++;
-            paintMAze();
-        }
+
     }
 }
