@@ -66,7 +66,7 @@ int main()
         arrow:
         printf("Please choose:\n1.Encrypt\n2.Decrypt\n3.Exit\n");
         scanf("%d", &input);
-        char str1[100], str2[100];
+        char str1[1000], str2[1000];
         if (input == 1)
         {
             printf("Enter a string to Enc:");
