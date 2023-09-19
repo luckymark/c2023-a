@@ -116,7 +116,7 @@ void scoring(struct pop** pop,int n) {
                     break;
             }
             printf("\nIndividual: %d , Attempt: %d",i+1,j+1);
-            score[i] = step_amount - j - 1;
+            score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
             }
