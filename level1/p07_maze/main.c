@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <process.h>
-#include <unistd.h>
 #include <conio.h>
 
 char Map[10][10] = {
