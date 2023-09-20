@@ -3,7 +3,7 @@
 #include <conio.h>
 
 //请生成可执行文件，用Windows的终端运行，勿用Clion的内置终端运行。
-//If it's unrecognizable above,please change the code format to GBK!
+//If it's unrecognizable above,please change the code format to GBK.
 typedef struct{
     int x;
     int y;
