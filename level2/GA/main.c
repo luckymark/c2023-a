@@ -44,7 +44,7 @@ struct pop** summon(int pop_size) {
     }
     return pop;
 }
-void paintMAze() {
+/*void paintMAze() {
     for (int x = 0; x < 10; ++x) {
         for (int y = 0; y < 10; ++y) {
             if (x == player_x && y == player_y) {
@@ -55,7 +55,7 @@ void paintMAze() {
         }
         printf("\n");
     }
-}
+}*/
 void move(char direction) {
     switch (direction) {
         case 'u':
@@ -115,13 +115,13 @@ void scoring(struct pop** pop,int n,int it) {
                     move('l');
                     break;
             }
+            system("cls");
+            printf("Iteration: %d,Individual: %d,Attempt: %d\n",it,i,j);
             score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
             }
         }
-        system("cls");
-        printf("Iteration: %d,Individual: %d\n",it,i);
     }
 }
 int roulette(int input[100]) {
