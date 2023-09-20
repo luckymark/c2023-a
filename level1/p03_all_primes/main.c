@@ -1,17 +1,18 @@
 #include<stdio.h>
 #include<time.h>
-#include<windows.h>
+
 int main()
 {
-  int start,last;
+    double start,last;
     start=clock();
-    int first=2;
+    int first=3;
     int end=1000;
     int i,j;
-    for(i=first;i<end;i++)
+    printf("2\n");
+    for(i=first;i<end;i+=2)
     {
         int x=i;
-        for(j=2;j<x;j++)
+        for(j=3;j<x;j+=2)
         {
             if(x%j==0)
             {
@@ -24,8 +25,8 @@ int main()
             printf("%d\n",j);
         }
     }
-    Sleep(10);
+
     last=clock();
-    printf("%dms", last-start);
+    printf("ºÄÊ±%fms",(last-start)/CLOCKS_PER_SEC);
     return 0;
 }
