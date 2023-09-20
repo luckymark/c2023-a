@@ -227,6 +227,7 @@ int main() {
         scoring(population,pop_size,i);
         population = sift(population);
     }
+    scoring(population,pop_size,-1);
     best(score,population);
     system("pause");
     return 0;
