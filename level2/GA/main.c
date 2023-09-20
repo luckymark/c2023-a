@@ -116,12 +116,12 @@ void scoring(struct pop** pop,int n,int it) {
                     break;
             }
             system("cls");
-            printf("Iteration: %d,Individual: %d,Attempt: %d\n",it,i,j);
             score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
             }
         }
+        printf("Iteration: %d,Individual: %d\n",it,i);
     }
 }
 int roulette(int input[100]) {
