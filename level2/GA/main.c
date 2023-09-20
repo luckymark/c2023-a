@@ -115,12 +115,12 @@ void scoring(struct pop** pop,int n,int it) {
                     move('l');
                     break;
             }
-            system("cls");
             score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
             }
         }
+        system("cls");
         printf("Iteration: %d,Individual: %d\n",it,i);
     }
 }
