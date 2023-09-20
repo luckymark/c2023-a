@@ -62,28 +62,28 @@ void move(char direction) {
             if (Map[player_x - 1][player_y] != '#') {
                 system("cls");
                 player_x--;
-                paintMAze();
+            //    paintMAze();
             }
             break;
         case 'd':
             if (Map[player_x + 1][player_y] != '#') {
                 system("cls");
                 player_x++;
-                paintMAze();
+             //   paintMAze();
             }
             break;
         case 'r':
             if (Map[player_x][player_y - 1] != '#') {
                 system("cls");
                 player_y--;
-                paintMAze();
+               // paintMAze();
             }
             break;
         case 'l':
             if (Map[player_x][player_y + 1] != '#') {
                 system("cls");
                 player_y++;
-                paintMAze();
+              //  paintMAze();
             }
             break;
     }
@@ -95,7 +95,7 @@ int is_win() {
         return 0;
     }
 }
-void scoring(struct pop** pop,int n) {
+void scoring(struct pop** pop,int n,int it) {
     int step;
     for (int i = 0; i < n; ++i) {
         reset();
@@ -115,6 +115,8 @@ void scoring(struct pop** pop,int n) {
                     move('l');
                     break;
             }
+            system("cls");
+            printf("Iteration: %d,Individual: %d,Attempt: %d\n",it,i,j);
             score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
@@ -222,7 +224,7 @@ int main() {
     scanf("%d",&iterations);
     struct pop** population = summon(pop_size);
     for (int i = 0; i < iterations; ++i) {
-        scoring(population,pop_size);
+        scoring(population,pop_size,i);
         population = sift(population);
     }
     best(score,population);
