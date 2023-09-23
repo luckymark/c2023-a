@@ -4,12 +4,14 @@
 #include "time.h"
 
 #define SIZE_X 21
-#define SIZE_Y 35
+#define SIZE_Y 21
 #define PLAYER 0
 #define GATE 1
 #define EXIT 2
 #define PATH 3
 #define WALL 4
+#define ARRIVED (-1)
+#define IN_STACK (-2)
 int place_x = 2;
 int place_y = 0;
 short map[SIZE_X][SIZE_Y];
@@ -18,9 +20,10 @@ void draw_map();
 char move(int delta_x, int delta_y);
 void init_map(int x, int y);
 void create_map_DF(int x, int y);
+void create_map_Prim(int x, int y);
 
 int main() {
-    create_map_DF(SIZE_X, SIZE_Y);
+    create_map_Prim(SIZE_X, SIZE_Y);
     draw_map();
     int ch;
     while((ch=getch())!=0x1B) /* ESC to quit, up-72 down-80 left-75 right-77 */
@@ -38,11 +41,7 @@ int main() {
     system("pause");
 }
 
-void init_map(int X, int Y){
-//    for(int x=0;x<X;x++) { map[x] = (char *) malloc(Y * sizeof(char)); }
-    for(int x=0;x<X;x++)for(int y=0;y<Y;y++){map[x][y] = (short)(x%2&&y%2?PATH:WALL);}
-//    return MAP;
-}
+void init_map(int X, int Y){for(int x=0;x<X;x++)for(int y=0;y<Y;y++)map[x][y] = (short)(x%2&&y%2?PATH:WALL);}
 
 void draw_map(){
     system("cls");
@@ -94,8 +93,6 @@ char move(int delta_x, int delta_y){
 }
 
 void create_map_DF(int X, int Y) {
-    int exit_x = -1;
-    do{
     srand((unsigned) time(NULL));
     init_map(X, Y);
     long *stack = malloc((X / 2) * (Y / 2) * sizeof(long));
@@ -167,16 +164,102 @@ void create_map_DF(int X, int Y) {
     }
     free(stack);free(s_depth);//释放栈动态获取的内存
     short max_depth = -1;
-    exit_x = -1;
+    int exit_x = -1;
     py = Y - 2;
     for (px = 1; px < X; px += 2)
         if (map[px][py] <= max_depth) {
             max_depth = map[px][py];
             exit_x = px;
         }
-}
-    while(exit_x==-1);
+
     map[exit_x][Y-1] = EXIT;
-    for(int px=0;px<X;px++)for(int py=0;py<Y;py++)if(map[px][py]<0)map[px][py]=PATH;
+    for(px=0;px<X;px++)for(py=0;py<Y;py++)if(map[px][py]<0)map[px][py]=PATH;
+
+}
+
+void create_map_Prim(int X, int Y) {
+//    int exit_x = -1;
+    srand((unsigned) time(NULL));
+    init_map(X, Y);
+    long *stack = malloc((X / 2) * (Y / 2) * sizeof(long));
+//    short *s_depth = malloc((X / 2) * (Y / 2) * sizeof(short));
+    for (int i = 0; i < (X / 2) * (Y / 2); i++)stack[i] = -1L;
+    int p = 1, start_x, start_y = 1;
+    start_x = 2 * (rand() % ((X - 1) / 2)) + 1;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+    map[start_x][start_y - 1] = PLAYER;
+    map[start_x][start_y] = ARRIVED;
+    place_x = start_x;
+    place_y = start_y - 1;// 初始化位置信息
+    stack[0] = start_x << 16 | start_y;
+//    s_depth[0] = 1;//初始化栈
+    int px, py;
+    while (p > 0) {
+        int rand_place = rand()%p;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+        px = stack[rand_place] >> 16;
+        py = stack[rand_place] % (1 << 16);
+        for(int i=rand_place; i<p; i++){stack[i] = stack[i+1];}
+        p--;
+        map[px][py] = ARRIVED;
+        unsigned char arrow = rand() & 0b11;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+        signed char direction = rand() & 1 ? 1 : -1;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+        char flag = 0;//flag记录了是否已经打通过墙
+        for (int cnt = 0; cnt < 4; cnt++) {
+            switch (cnt) {
+                case 0:
+                    if (px != 1 && map[px - 2][py] == ARRIVED&&flag==0) {
+//                        stack[p++] = (px - 2) << 16 | py;
+//                        map[px - 2][py] = IN_STACK;
+                        map[px - 1][py] = PATH;
+                        flag = 1;
+                    }else if(px != 1 && map[px - 2][py] != IN_STACK) {map[px - 2][py] = IN_STACK;
+                        stack[p++] = (px - 2) << 16 | py;}
+                    break;
+                case 2:
+                    if (px != X - 2 && map[px + 2][py] == ARRIVED&&flag==0) {
+//                        stack[p] = (px + 2) << 16 | py;
+//                        s_depth[p] = (short) (pd + 1);
+//                        p++;
+//                        map[px + 2][py] = IN_STACK;
+                        map[px + 1][py] = PATH;
+                        flag = 1;
+                    }else if(px != X - 2 && map[px + 2][py] != IN_STACK) {map[px + 2][py] = IN_STACK;
+                        stack[p++] = (px + 2) << 16 | py;}
+                    break;
+                case 1:
+                    if (py != 1 && map[px][py - 2] == ARRIVED&&flag==0) {
+//                        stack[p] = px << 16 | (py - 2);
+//                        s_depth[p] = (short) (pd + 1);
+//                        p++;
+//                        map[px][py - 2] = (short) (-pd - 1);
+                        map[px][py - 1] = PATH;
+                        flag = 1;
+                    }else if(py != 1 && map[px][py - 2] != IN_STACK) {map[px][py - 2] = IN_STACK;
+                        stack[p++] = px << 16 | (py - 2);}
+                    break;
+                case 3:
+                    if (py != Y - 2 && map[px][py + 2] >= 0&&flag==0) {
+//                        stack[p] = px << 16 | (py + 2);
+//                        s_depth[p] = (short) (pd + 1);
+//                        p++;
+//                        map[px][py + 2] = (short) (-pd - 1);
+                        map[px][py + 1] = PATH;
+                        flag = 1;
+                    }else if(py != Y - 2 && map[px][py + 2] != IN_STACK){map[px][py + 2] = IN_STACK;
+                        stack[p++] = px << 16 | (py + 2);}
+                    break;
+                default: {
+                    printf("HELP!!!I can't analyze %d", arrow);
+                    break;
+                }
+            }
+            arrow = (arrow + direction) & 0b11;
+//            if ((rand() & 0b1111) == 0)break;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+        }
+    }
+    free(stack);//释放栈动态获取的内存
+    int exit_x = 2*(rand()%((X-1)/2))+1;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+//    py = Y - 2;
+    map[exit_x][Y-1] = EXIT;
+    for(px=0;px<X;px++)for(py=0;py<Y;py++)if(map[px][py]<0)map[px][py]=PATH;
 
 }
