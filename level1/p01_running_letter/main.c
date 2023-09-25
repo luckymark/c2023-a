@@ -1,20 +1,32 @@
 #include <stdio.h>
-#include<windows.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+#define N 40
 int main() {
-    setbuf(stdout,NULL);
-    printf("A");
-    int i,j;
-    for(i=0;i<262;i++)
+    int i,j,k;
+    char str[N];
+    printf("请输入一个字符串:");
+    gets(str);
+    for(i=1;i<50;i++)
     {
-        Sleep(50);
-        printf("\b A");
-
+        for(j=0;j<i;j++)
+        {
+            printf(" ");
+        }
+        printf("%s",str);
+        Sleep(100);
+        system("cls");
     }
-    for(j=0;j<262;j++)
+    for(i=50;i>1;i--)
     {
-        Sleep(50);
-        printf("\b\bA");
+        for(k=0;k<i;k++)
+        {
+            printf(" ");
+        }
+        printf("%s",str);
+        Sleep(100);
+        system("cls");
     }
-
     return 0;
 }
