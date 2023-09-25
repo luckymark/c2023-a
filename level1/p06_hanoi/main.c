@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <windows.h>
 void move(char a,char b){
     printf("%c -> %c\n",a,b);
     return;
@@ -16,5 +16,6 @@ void hanoi(int n,char a,char b,char c){
 }
 int main(){
     hanoi(64,'A','B','C');
+    system("pause");
     return 0;//
 }

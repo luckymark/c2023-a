@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <windows.h>
 /*
  * 输入一个数来拆分成三个质数之和，输出是所有解（至少我认为）
  * 100以内肯定没问题啦
@@ -41,5 +42,6 @@ int main() {
                 printf("%d+%d+%d\n", pr[i], pr[j], tmp - pr[j]);
         }
     }
+    system("pause");
     return 0;
 }

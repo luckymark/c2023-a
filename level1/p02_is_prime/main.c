@@ -1,5 +1,5 @@
 #include <stdio.h>
-using namespace std;
+#include <stdbool.h>
 int main() {
     int n;
     bool flag=true;
