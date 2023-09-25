@@ -1,4 +1,4 @@
-//
+//输入结束请输入-1哦
 #include <stdio.h>
 #include <malloc.h>
 #include <assert.h>
