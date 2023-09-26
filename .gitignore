@@ -4,3 +4,4 @@
 *.exe
 sqlite-source-code
 *.h
+test.c
