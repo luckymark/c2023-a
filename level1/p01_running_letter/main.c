@@ -1,22 +1,32 @@
-#include<stdio.h>
-int main(){
-    int i,x;
-    scanf("%d",&x);
-    for(i=2;i<x;i++)
+#include <stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+#define N 40
+int main() {
+    int i,j,k;
+    char str[N];
+    printf("请输入一个字符串:");
+    gets(str);
+    for(i=1;i<50;i++)
     {
-        if(x%i==0)
+        for(j=0;j<i;j++)
         {
-            break;
+            printf(" ");
         }
+        printf("%s",str);
+        Sleep(100);
+        system("cls");
     }
-    if(i==x)
+    for(i=50;i>1;i--)
     {
-        printf("是素数");
-    }else
-    {
-        printf("不是素数");
+        for(k=0;k<i;k++)
+        {
+            printf(" ");
+        }
+        printf("%s",str);
+        Sleep(100);
+        system("cls");
     }
-
     return 0;
 }
-
