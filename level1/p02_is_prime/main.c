@@ -1,21 +1,13 @@
 #include<stdio.h>
+#include"isprime.h"
+int isprime(int x);
 int main(){
-    int i,x;
+    int x;
     scanf("%d",&x);
-    for(i=2;i<x;i++)
-    {
-        if(x%i==0)
-        {
-            break;
-        }
+    if (isprime(x)) {
+        printf("ÊÇËØÊý");
+    }else{
+        printf("²»ÊÇËØÊý");
     }
-    if(i==x)
-    {
-        printf("æ˜¯ç´ æ•°");
-    }else
-    {
-        printf("ä¸æ˜¯ç´ æ•°");
-    }
-
     return 0;
 }
