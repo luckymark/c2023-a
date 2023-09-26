@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<time.h>
-
+#include"isprime2.h"
 int main()
 {
     double start,last;
@@ -11,19 +11,7 @@ int main()
     printf("2\n");
     for(i=first;i<end;i+=2)
     {
-        int x=i;
-        for(j=3;j<x;j+=2)
-        {
-            if(x%j==0)
-            {
-
-                break;
-            }
-        }
-        if(j==x)
-        {
-            printf("%d\n",j);
-        }
+        isprime(i);
     }
 
     last=clock();
