@@ -1,4 +1,4 @@
-#define SIDE 18//宏定义方便改变迷宫的边长来改变迷宫的难度
+#define SIDE 20 //宏定义方便改变迷宫的边长来改变迷宫的难度
 #define UP 72
 #define DOWN 80
 #define LEFT 75
@@ -21,9 +21,11 @@ void Form_maze(int maze[SIDE + 2][SIDE + 2], int x, int y);//构建迷宫的函�
 void Print(int maze[SIDE + 2][SIDE + 2], Player player);//打印迷宫的函数
 int In(int maze[SIDE + 2][SIDE + 2]);//设置入口的函数
 int Out(int maze[SIDE + 2][SIDE + 2]);//设置出口的函数
-void Move(int maze[SIDE + 2][SIDE + 2], Player* pi);//实现方向键控制移动的函数
+void Move(int maze[SIDE + 2][SIDE + 2], Player* pi, int a, int b);//实现方向键控制移动的函数
 void Menu();//打印菜单的函数
-void color(int x);//控制字体颜色的函数
+void Color(int x);//控制字体颜色的函数
+void gotoxy(int x, int y);//设置光标位置
+int Find_way(int maze[SIDE + 2][SIDE + 2], int x, int y, Player player);
 
 void Init_maze(int maze[SIDE + 2][SIDE + 2])
 {
@@ -59,7 +61,6 @@ void Form_maze(int maze[SIDE + 2][SIDE + 2], int x, int y)
                     if (arr[0] == num || arr[1] == num || arr[2] == num || arr[3] == num)
                         goto flag;
                     arr[i] = num;
-
                     switch (num)
                     {
                         case 0:
@@ -91,30 +92,33 @@ void Print(int maze[SIDE + 2][SIDE + 2], Player player)
         {
             if (i == player.y && j == player.x)
             {
-                color(4);
+                Color(4);
                 printf("& ");
             }
             else if (maze[i][j] == 0)
             {
-                color(9);
+                Color(9);
                 printf("# ");
             }
             else if (maze[i][j] == 1)
             {
-                color(9);
+                Color(9);
                 printf("  ");
             }
             else if (maze[i][j] == 3)
             {
-                color(9);
+                Color(6);
                 printf("@ ");
             }
-            else
-                printf("  ");
+            else if (maze[i][j] == 4)
+            {
+                Color(2);
+                printf("* ");
+            }
         }
         printf("\n");
     }
-    color(7);
+    Color(7);
 }
 int In(int maze[SIDE + 2][SIDE + 2])
 {
@@ -138,14 +142,14 @@ int Out(int maze[SIDE + 2][SIDE + 2])
     }
     return out;
 }
-void Move(int maze[SIDE + 2][SIDE + 2], Player* pi)
+void Move(int maze[SIDE + 2][SIDE + 2], Player* pi, int x, int y)
 {
     if (_kbhit)
     {
         int ch1 = _getch();
-        int ch2 = _getch();
         if (ch1 == 224)
         {
+            int ch2 = _getch();
             int dx = 0, dy = 0;
             switch (ch2)
             {
@@ -162,16 +166,40 @@ void Move(int maze[SIDE + 2][SIDE + 2], Player* pi)
                     dx = 1;
                     break;
             }
-            if (maze[(*pi).y + dy][(*pi).x + dx] == 1||
-                maze[(*pi).y + dy][(*pi).x + dx] == 3)
+            if (maze[(*pi).y + dy][(*pi).x + dx] != 0 )
             {
+                gotoxy(2 * (*pi).x-2, (*pi).y);
+                printf("  ");
                 (*pi).x = (*pi).x + dx;
                 (*pi).y = (*pi).y + dy;
+                gotoxy(2 * (*pi).x-2, (*pi).y);
+                Color(4);
+                printf("&");
+                Color(7);
             }
-            system("cls");
+        }
+        else if (ch1 == 9)
+        {
+            gotoxy(1, 0);
+            while (1)
+            {
+                Find_way(maze, x, y, *pi);
+                if (maze[(*pi).y][(*pi).x] != 4)
+                {
+                    for (int i = 0; i < SIDE + 2; i++)
+                    {
+                        for (int j = 0; j < SIDE + 2; j++)
+                        {
+                            if (maze[i][j] == 4)
+                                maze[i][j] = 1;
+                        }
+                    }
+                }
+                else
+                    break;
+            }
             Print(maze, *pi);
         }
-        else {};
     }
 }
 void Menu()
@@ -179,48 +207,109 @@ void Menu()
     printf("Welcome to MAZE game!\n");
     printf("Please choose:\n1.play game\n2.exit\n");
 }
-void color(int x)
+void Color(int x)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), x);
+}
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+int Find_way(int maze[SIDE + 2][SIDE + 2], int x, int y, Player player)
+{
+    int count = 0;
+    if (player.y == y && player.x == x)
+    {
+        maze[y][x] = 4;
+        goto arrow;
+    }
+    if (maze[y][x] == 1)
+    {
+        count++;
+        maze[y][x] = 4;
+        int arr[4] = { 4,4,4,4 };
+        for (int i = 0; i < 4; i++)
+        {
+            flag:
+            {
+                int num = (rand()) % 4;
+                if (arr[0] == num || arr[1] == num || arr[2] == num || arr[3] == num)
+                    goto flag;
+                arr[i] = num;
+                switch (num)
+                {
+                    case 0:
+                        if (Find_way(maze, x + 1, y, player) == 1)
+                            goto arrow;
+                        break;
+                    case 1:
+                        if (Find_way(maze, x - 1, y, player) == 1)
+                            goto arrow;
+                        break;
+                    case 2:
+                        if (Find_way(maze, x, y + 1, player) == 1)
+                            goto arrow;
+                        break;
+                    case 3:
+                        if (Find_way(maze, x, y - 1, player) == 1)
+                            goto arrow;
+                        break;
+                    default:
+                        printf("error");
+                }
+            }
+        }
+    }
+    arrow:;
+    return count;
 }
 
 int main()
 {
     while (1)
     {
-        int input, ch1, ch2, out;
+        int input, in, out;
         int maze[SIDE + 2][SIDE + 2];
         Menu();
-        scanf("%d", &input);
+        scanf_s("%d", &input);
         if (input == 1)
         {
-            printf("Please remember:'#' is wall,'&' is player\n");
+            printf("Please remember:'#' is wall,'&' is player,'@' is exit\n");
+            printf("If you can't get out of the maze,please press 'Tab' to find way\n");
             Init_maze(maze);
             srand((unsigned int)time(NULL));
             int ori1 = rand() % (SIDE - 2) + 2;
             int ori2 = rand() % (SIDE - 2) + 2;
             Form_maze(maze, ori1, ori2);
-            Player player = { 1,In(maze) };
+            in = In(maze);
+            Player player = { 1,in };
             out = Out(maze);
             maze[out][SIDE] = 1;
             maze[out][SIDE + 1] = 3;
             Print(maze, player);
             Player* pi = &player;
+            Move(maze, pi, SIDE, out);
+            system("cls");
+            Print(maze, player);
             while (1)
             {
-                Move(maze, pi);
+                Move(maze, pi, SIDE, out);
                 if (maze[player.y][player.x] == 3)
                     break;
             }
-            color(6);
+            system("cls");
+            Color(6);
             printf("Congratulation!\nYou are winning.\n\n");
-            color(7);
+            Color(7);
         }
         else if (input == 2)
             break;
         else
         {
-            printf("ERROR");
+            printf("ERROR\n");
         }
     }
     return 0;
