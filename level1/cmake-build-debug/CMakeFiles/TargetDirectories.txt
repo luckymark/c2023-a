@@ -1,0 +1,12 @@
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p01_running_letter.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p02_is_prime.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p03_all_primes.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p04_goldbach.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p05_encrypt_decrypt.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p06_hanoi.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p07_maze.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p08_push_boxes.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p09_linked_list.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/p10_warehouse.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/edit_cache.dir
+E:/c2023-a/level1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

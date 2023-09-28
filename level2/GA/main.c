@@ -115,8 +115,6 @@ void scoring(struct pop** pop,int n,int it) {
                     move('l');
                     break;
             }
-            system("cls");
-            printf("Iteration: %d,Individual: %d,Attempt: %d\n",it,i,j);
             score[i] = step_amount - j;
             if(is_win() == 1) {
                 break;
@@ -220,6 +218,7 @@ void best(int input[100],struct pop** pop) {
 };
 int main() {
     printf("Enter the iterations: ");
+    int begin = clock();
     int iterations;
     scanf("%d",&iterations);
     struct pop** population = summon(pop_size);
@@ -229,6 +228,8 @@ int main() {
     }
     scoring(population,pop_size,-1);
     best(score,population);
+    int end = clock();
+    printf("\nTime: %d",end-begin);
     system("pause");
     return 0;
 }

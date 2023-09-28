@@ -88,6 +88,12 @@ build CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj: C_COMPILER__Neura
   OBJECT_DIR = CMakeFiles\NeuralNetworks.dir
   OBJECT_FILE_DIR = CMakeFiles\NeuralNetworks.dir\NeuralNetworks
 
+build CMakeFiles/NeuralNetworks.dir/NeuralNetworks/extract_methods.c.obj: C_COMPILER__NeuralNetworks_Debug E$:/c2023-a/level2/NeuralNetworks/extract_methods.c || cmake_object_order_depends_target_NeuralNetworks
+  DEP_FILE = CMakeFiles\NeuralNetworks.dir\NeuralNetworks\extract_methods.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\NeuralNetworks.dir
+  OBJECT_FILE_DIR = CMakeFiles\NeuralNetworks.dir\NeuralNetworks
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target NeuralNetworks
@@ -96,7 +102,7 @@ build CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj: C_COMPILER__Neura
 #############################################
 # Link the executable NeuralNetworks.exe
 
-build NeuralNetworks.exe: C_EXECUTABLE_LINKER__NeuralNetworks_Debug CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj
+build NeuralNetworks.exe: C_EXECUTABLE_LINKER__NeuralNetworks_Debug CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj CMakeFiles/NeuralNetworks.dir/NeuralNetworks/extract_methods.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\NeuralNetworks.dir
