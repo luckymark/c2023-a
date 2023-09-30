@@ -1,10 +1,12 @@
+#include <stdbool.h>
 #include "stdio.h"
 #include "conio.h"
 #include "stdlib.h"
 #include "time.h"
+#include "string.h"
 
 #define SIZE_X 29
-#define SIZE_Y 101
+#define SIZE_Y 115
 #define PLAYER 0
 #define ENTRY 1
 #define EXIT 2
@@ -26,12 +28,16 @@ struct QNode{
 void draw_map();
 char move(int delta_x, int delta_y);
 void init_map(int x, int y);
+bool create_map(char* type, int x, int y);
 void create_map_DF(int x, int y);
 void create_map_Prim(int x, int y);
 int search_exit(int x, int y);
 
 int main() {
-    create_map_Prim(SIZE_X, SIZE_Y);
+    char input[100] = {0};
+    printf("select method to create map(df, prim):");
+    scanf("%s", input);
+    while(!create_map(input, SIZE_X, SIZE_Y))scanf("%s", input);
     draw_map();
     int ch;
     while ((ch = getch()) != 0x1B) /* ESC to quit, up-72 down-80 left-75 right-77 */
@@ -124,85 +130,42 @@ void create_map_DF(int X, int Y) {
     srand((unsigned) time(NULL));
     init_map(X, Y);
     long *stack = malloc((X / 2) * (Y / 2) * sizeof(long));
-    short *s_depth = malloc((X / 2) * (Y / 2) * sizeof(short));
+    int *s_depth = malloc((X / 2) * (Y / 2) * sizeof(short));
     for (int i = 0; i < (X / 2) * (Y / 2); i++)stack[i] = -1L;
-    int p = 1, start_x, start_y = 1;
-    start_x = 2 * (rand() % ((X - 1) / 2)) + 1;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+    int p = 1, start_x = 2 * (rand() % ((X - 1) / 2)) + 1, start_y = 1, px, py, pd;// NOLINT(cert-msc30-c, cert-msc50-cpp)
     map[start_x][start_y - 1] = PLAYER;
-    place_x = start_x;
-    place_y = start_y - 1;// 初始化位置信息
+    place_x = start_x;place_y = start_y - 1;// 初始化位置信息
     stack[0] = start_x << 16 | start_y;
     s_depth[0] = 1;//初始化栈
-    int px, py;
-    short pd;
-    while (p > 0) {
-        p--;
-        px = stack[p] >> 16;
-        py = stack[p] % (1 << 16);
-        pd = s_depth[p];
-        map[px][py] = (short) -pd;
+    while (p-- > 0) {
+        px = stack[p] >> 16;py = stack[p] % (1 << 16);pd = s_depth[p];
+        map[px][py] = -pd;
         unsigned char arrow = rand() & 0b11;// NOLINT(cert-msc30-c, cert-msc50-cpp)
         signed char direction = rand() & 1 ? 1 : -1;// NOLINT(cert-msc30-c, cert-msc50-cpp)
         for (int cnt = 0; cnt < 4; cnt++) {
-            switch (arrow) {
-                case 0:
-                    if (px != 1 && map[px - 2][py] >= 0) {
-                        stack[p] = (px - 2) << 16 | py;
-                        s_depth[p] = (short) (pd + 1);
-                        p++;
-                        map[px - 2][py] = (short) (-pd - 1);
-                        map[px - 1][py] = PATH;
-                    }
-                    break;
-                case 2:
-                    if (px != X - 2 && map[px + 2][py] >= 0) {
-                        stack[p] = (px + 2) << 16 | py;
-                        s_depth[p] = (short) (pd + 1);
-                        p++;
-                        map[px + 2][py] = (int) (-pd - 1);
-                        map[px + 1][py] = PATH;
-                    }
-                    break;
-                case 1:
-                    if (py != 1 && map[px][py - 2] >= 0) {
-                        stack[p] = px << 16 | (py - 2);
-                        s_depth[p] = (short) (pd + 1);
-                        p++;
-                        map[px][py - 2] = (int) (-pd - 1);
-                        map[px][py - 1] = PATH;
-                    }
-                    break;
-                case 3:
-                    if (py != Y - 2 && map[px][py + 2] >= 0) {
-                        stack[p] = px << 16 | (py + 2);
-                        s_depth[p] = (short) (pd + 1);
-                        p++;
-                        map[px][py + 2] = (int) (-pd - 1);
-                        map[px][py + 1] = PATH;
-                    }
-                    break;
-                default: {
-                    printf("HELP!!!I can't analyze %d", arrow);
-                    break;
-                }
+            int dx = (arrow%2-1)*(arrow-1), dy = (arrow%2)*(arrow-2);//(1, 0)(0, -1)(-1, 0)(0, 1)
+
+            if (px*(arrow==2)!=1&&px*(arrow==0)!=X-2&&py*(arrow==1)!=1&&py*(arrow==3)!=Y-2&&map[px + 2*dx][py + 2*dy]>=0){
+                stack[p] = (px + 2*dx) << 16 | (py + 2*dy);
+                s_depth[p++] = (pd + 1);
+                map[px+2*dx][py+2*dy] = (int) (-pd-1);
+                map[px+dx][py+dy] = PATH;
             }
             arrow = (arrow + direction) & 0b11;
-            if ((rand() & 0b1111) == 0)break;// NOLINT(cert-msc30-c, cert-msc50-cpp)
+            if ((rand() & 0b111) == 0)break;// NOLINT(cert-msc30-c, cert-msc50-cpp)
         }
     }
-    free(stack);
-    free(s_depth);//释放栈动态获取的内存
-    int max_depth = -1;
-    int exit_x = -1;
-    py = Y - 2;
+    free(stack);free(s_depth);//释放栈动态获取的内存
+    int max_depth = -1, exit_x = -1;
+
     for (px = 1; px < X; px += 2)
-        if (map[px][py] <= max_depth) {
-            max_depth = map[px][py];
+        if (map[px][Y-2] <= max_depth) {
+            max_depth = map[px][Y-2];
             exit_x = px;
         }
 
     map[exit_x][Y - 1] = EXIT;
-    for (px = 0; px < X; px++)for (py = 0; py < Y; py++)if (map[px][py] < 0)map[px][py] = PATH;
+    for (px = 1; px < X-1; px++)for (py = 1; py < Y-1; py++)if (map[px][py] < 0)map[px][py] = PATH;
 
 }
 
@@ -303,7 +266,7 @@ int search_exit(int X, int Y){
         depth = head->value;
         map[px][py] = ARRIVED;
         for(char i=0;i<4;i++){
-            int dx = (i%2-1)*(i-1), dy = i%2*(i-2);
+            int dx = (i%2-1)*(i-1), dy = i%2*(i-2); //(1, 0)(0, -1)(-1, 0)(0, 1)
             if (map[px+dx][py+dy]==PATH){
                 tail->next = malloc(sizeof(struct QNode));
                 tail = tail->next;
@@ -324,4 +287,11 @@ int search_exit(int X, int Y){
     }
     for(px=0;px<X;px++)for(py=0;py<Y;py++)if(map[px][py]==ARRIVED)map[px][py]=PATH;
     return max_place_x;
+}
+
+bool create_map(char* type, int x, int y){
+    if(strcmp("df", type) == 0)create_map_DF(x, y);
+    else if(strcmp("prim", type) == 0)create_map_Prim(x, y);
+    else return false;
+    return true;
 }
