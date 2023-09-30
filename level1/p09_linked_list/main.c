@@ -1,89 +1,49 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 #include "limits.h"
+#include "LinkList.h"
 
-struct Node {
-    struct Node * next;
-    int value;
-};
-
-struct Node* insert(struct Node* head, int index, int value){
-    struct Node *new_node=malloc(sizeof (struct Node));
-    new_node->next=NULL;
-    new_node->value=value;
-    if(index<0)index=INT_MAX;
-    else if(index==0){new_node->next=head;return new_node;}
-    struct Node* p=head;
-    while(index>1&&p->next!=NULL) { p = p->next;index-- ;}
-    new_node->next=(p->next);
-    p->next=new_node;
-    return head;
+void print_list(LinkList* list){
+    if(!(list->size)) { printf("(null)"); return; }
+    LinkNode* p = list->head;
+    for(unsigned i=0;i<list->size-1;i++){printf("'%s' -> ", (char*)p->value);p=p->next;}
+    printf("'%s'", (char*)p->value);
 }
 
-int search_value(struct Node* head, int value){
-    struct Node* p=head;
-    int cnt = 0;
-    while(p!=NULL&&p->value!=value) { p = p->next;cnt++; }
-    if(p==NULL)return -1;
-    else return cnt;
-}
-
-void print_link(struct Node* head){
-    struct Node* p=head;
-    while(p!=NULL){
-        printf("%d -> ", p->value);
-        p=p->next;
+int main(){
+    const unsigned MAX_LENGTH = 100;
+    LinkList *list = createLinkList();
+    unsigned i = 0;
+    char values[MAX_LENGTH];
+    values[0] = '\0';
+    printf(">>>");
+    scanf("%s", values);
+    while(values[0]!='#'){
+        char* tmp = malloc(strlen(values)* sizeof(char));
+        strcpy(tmp, values);
+        appendLinkList(list, list->size, tmp);
+        printf(">>>");
+        scanf("%s", values);
+        i++;
     }
-    printf("\b\b\b\b\x20\x20\x20\x20\r\n");
-}
+    printf("create link list: ");
+    print_list(list);
+    reversedLinkList(list);
+    printf("\nreversed link list: ");
+    print_list(list);
+    printf("\npress in the index of value to delete: ");
+    scanf("%d", &i);
+    bool res = removeLinkList(list, i);
+    printf("\n%s\n", res?"delete success":"delete failed");
+    print_list(list);
 
-struct Node* delete_index(struct Node* head, int index){
-    struct Node* p=head;
-    if(index==0)return head->next;
-    while(index>0&&p->next!=NULL)p=p->next;
-    p->next=p->next->next;
-    return head;
-}
+    printf("\npress in the index of value to search: ");
+    scanf("%d", &i);
+    char* ans = (char*)searchLinkList(list, i);
+    printf("\n%s\n", ans);
 
-struct Node* delete_node(struct Node* head, struct Node* node){
-    if(head==node){return head->next;}
-    struct Node* p=head;
-    while(p->next!=NULL||p->next!=node)p=p->next;
-    if(p->next==NULL)return head;
-    p->next=p->next->next;
-    return head;
-}
-
-struct Node* delete_value(struct Node* head, int value){
-    if (head->value==value)return head->next;
-    struct Node* p=head;
-    while (p->next!=NULL&&p->next->value!=value)p=p->next;
-    if(p->next==NULL)return head;
-    p->next=p->next->next;
-    return head;
-}
-
-struct Node* reversed(struct Node* head){
-    struct Node* cur=head, *new_head=NULL, *q;
-    while(cur!=NULL){
-        q = cur->next;
-        cur->next=new_head;
-        new_head=cur;
-        cur=q;
-    }
-    return new_head;
-}
-
-int main() {
-    struct Node head = {NULL,0};
-    int val;
-    do {scanf("%d", &val);insert(&head, 1, val);}
-    while (val>=0);
-    delete_value(&head, val);
-    print_link(&head);
-    struct Node* new_head = reversed(&head);
-    print_link(new_head);
-    int index = search_value(new_head, 5);
-    printf("%d", index);
-    return 0;
+    char** tolist = (char**) toList(list);
+    for(i=0;i<list->size;i++)printf("%s, ", tolist[i]);
+    destroyLinkList(list);
 }

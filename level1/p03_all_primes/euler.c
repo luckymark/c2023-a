@@ -4,7 +4,7 @@
 
 void Euler(int, int[]);//欧拉筛法
 
-int main() {
+int mmain() {
     int n;
     scanf("%d", &n);
     static int out[MAX_SIZE] = {};
