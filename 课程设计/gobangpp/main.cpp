@@ -120,7 +120,7 @@ int main()
                             end = clock();
                             time_dfs = (float)(end-start)/CLOCKS_PER_SEC;
                             printf("t_2: %f \n",time_dfs);
-                            if(time_dfs < 0.05 && search_score<SA*0.7) //动态选择4层还是2层
+                            if(time_dfs < 0.09 && search_score<SA*0.7) //动态选择4层还是2层
                             {
                                 MAXlayer = 4;
                                 search_DFS(key,search_generate(chessboard,AIchess,ltx,lty,rbx,rby),1,chessboard,-SCOREMAX, SCOREMAX, score,ltx,lty,rbx,rby);
