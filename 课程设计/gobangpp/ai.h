@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <list>
 #include <ctime>
+#include <random>
 using namespace std;
 //测试用
 float time_dfs = 0;
@@ -21,6 +22,8 @@ float time_dfs = 0;
 #define SC 720
 #define SD 10
 #define SE 2
+//hash相关
+unsigned int zobrist_list[3][MAX+2][MAX+2];
 //六个子的棋形
 const int sixchess_num = 10;
 const int score_six[sixchess_num] = {SB,SC,SC,SC,SC,SD,SD,SD,SE,SE};
@@ -31,13 +34,24 @@ const int score_five[fivechess_num] = {SA,SB,SE,SC};
 const list<int> fivechess_list[fivechess_num]={{1,1,1,1,1,},{1,1,0,1,1},{0,0,1,0,0},{0,1,1,1,0}};
 //极大极小搜索相关
 int MAXlayer = 2; //设置成偶数层
-typedef struct location location;
 typedef struct location  //用一个特定函数生成含可落子点的坐标的链表，返回头节点，每用一个释放一个
 {
     int x;
     int y;
     int score;  //这个位置的分数
 }location;
+//hash相关
+typedef struct hash_storage
+{
+    int score;
+    int layer;
+    unsigned int key;
+    hash_storage* next;
+}hash_storage;
+
+const unsigned int hash_MAX = 500;
+hash_storage hash_list[hash_MAX+1];
+
 int AIchess = 0;
 int HUchess = 0;
 //初始化函数
@@ -57,6 +71,25 @@ int** AI_start(int AI, int HU)
     }
     AIchess = AI;
     HUchess = HU;
+
+    //hash初始化
+
+    static uniform_int_distribution<unsigned> u(0,4294967200);
+    static default_random_engine e;    // 生成无符号随机整数
+
+    for(int i = 1; i <= MAX; i++)
+    {
+        for(int j = 1; j <= MAX; j++)
+        {
+            zobrist_list[AIBLACK][i][j] = u(e);
+            zobrist_list[AIWHITE][i][j] = u(e);
+        }
+    }
+    for(int i = 1; i <= hash_MAX; i++)
+    {
+        hash_list[i].layer = -1;
+    }
+
     return chessboard;
 }
 
@@ -78,6 +111,45 @@ int max(int num1, int num2)
 int min(int num1, int num2)
 {
     return num1 < num2 ? num1 : num2;
+}
+
+//hash相关函数
+
+//对传入的&key和&score处理，若传出NULL，说明匹配到了，分数已修改，若返回地址，说明没匹配到，返回申请到的地址，分数计算完后填入
+hash_storage* hash_set(const unsigned int &key, int &score,const  int &layer)
+{
+    unsigned int num = key % hash_MAX;
+    if(hash_list[num].layer == -1)  //还没有存过
+    {
+        hash_list[num].layer = layer;
+        hash_list[num].key = key;
+        hash_list[num].next = nullptr;
+        return &hash_list[num];
+    }
+    else
+    {
+        hash_storage *point = &hash_list[num];
+        while(true)
+        {
+            if(point->key == key && point->layer >= layer)  //匹配到了
+            {
+                score = point->score;
+                return nullptr;
+            }
+            if(point->next == nullptr)
+            {
+                point->next = (hash_storage*)malloc(sizeof(hash_storage));
+                point->next->layer = layer;
+                point->next->key = key;
+                point->next->next = nullptr;
+                return point->next;
+            }
+            else
+            {
+                point = point->next;
+            }
+        }
+    }
 }
 
 void afterchess_update(int& ltx,int& lty,int& rbx,int& rby,int x, int y)
@@ -292,7 +364,7 @@ void search_freeboard(int** mfree)   //模仿申请空间的方式释放空间
     free(mfree);
 }
 location search_result;
-int search_DFS(location* now_list,int layer, int** board,int lastmax,int lastmin,int score,int ltx,int lty,int rbx,int rby)
+int search_DFS(unsigned int key,location* now_list,int layer, int** board,int lastmax,int lastmin,int score,int ltx,int lty,int rbx,int rby)
 {
     int num = 1;
     int num_max = now_list[0].x;
@@ -301,14 +373,24 @@ int search_DFS(location* now_list,int layer, int** board,int lastmax,int lastmin
         int minnum = SCOREMAX;
         while(num <= num_max)
         {
-            int **newboard = search_copy(board);
-            int last_score = get_locationscore(newboard,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(newboard,now_list[num].x,now_list[num].y,HUchess);
-            newboard[now_list[num].x][now_list[num].y] = HUchess;
-            minnum = min(minnum, score + now_list[num].score-last_score);
+            unsigned int key2 = key;
+            key2^=zobrist_list[HUchess][now_list[num].x][now_list[num].y];
+            int score2 = score;
+            hash_storage *hash = hash_set(key2,score2,layer);
+            if(hash == nullptr)
+            {
+                minnum = min(minnum, score2);
+            }
+            else
+            {
+                int last_score = get_locationscore(board,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(board,now_list[num].x,now_list[num].y,HUchess);
+                score2 = score + now_list[num].score-last_score;
+                hash->score = score2;
+                minnum = min(minnum, score2);
+            }
             if(minnum <= lastmax){
                 return minnum;
             }
-            search_freeboard(newboard);
             num++;
         }
         return minnum;
@@ -321,21 +403,34 @@ int search_DFS(location* now_list,int layer, int** board,int lastmax,int lastmin
             int minnum = SCOREMAX;
             while(num <= num_max)
             {
-                int** newboard = search_copy(board);
-                int last_score = get_locationscore(newboard,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(newboard,now_list[num].x,now_list[num].y,HUchess);
-                newboard[now_list[num].x][now_list[num].y] = HUchess;
-                int ltx2,lty2,rbx2,rby2;
-                ltx2 = ltx;
-                lty2 = lty;
-                rbx2 = rbx;
-                rby2 = rby;
-                afterchess_update(ltx2,lty2,rbx2,rby2,now_list[num].x,now_list[num].y);
-                minnum = min(minnum, search_DFS(search_generate(newboard,AIchess,ltx2,lty2,rbx2,rby2),layer+1,newboard,lastmax,minnum,score+now_list[num].score - last_score,ltx2,lty2,rbx2,rby2));
+                unsigned int key2 = key;
+                key2^=zobrist_list[HUchess][now_list[num].x][now_list[num].y];
+                int score2 = score;
+                hash_storage *hash = hash_set(key2,score2,layer);
+                if(hash == nullptr)
+                {
+                    minnum = min(minnum, score2);
+                }
+                else
+                {
+                    int** newboard = search_copy(board);
+                    int last_score = get_locationscore(newboard,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(newboard,now_list[num].x,now_list[num].y,HUchess);
+                    newboard[now_list[num].x][now_list[num].y] = HUchess;
+                    int ltx2,lty2,rbx2,rby2;
+                    ltx2 = ltx;
+                    lty2 = lty;
+                    rbx2 = rbx;
+                    rby2 = rby;
+                    afterchess_update(ltx2,lty2,rbx2,rby2,now_list[num].x,now_list[num].y);
+                    score2 = search_DFS(key2,search_generate(newboard,AIchess,ltx2,lty2,rbx2,rby2),layer+1,newboard,lastmax,minnum,score+now_list[num].score - last_score,ltx2,lty2,rbx2,rby2);
+                    minnum = min(minnum, score2);
+                    hash->score = score2;
+                    search_freeboard(newboard);
+                }
                 if(minnum <= lastmax)
                 {
                     return minnum;
                 }
-                search_freeboard(newboard);
                 num++;
             }
             return minnum;
@@ -345,33 +440,58 @@ int search_DFS(location* now_list,int layer, int** board,int lastmax,int lastmin
             int maxnum = -SCOREMAX;
             while(num <= num_max)
             {
-                int** newboard = search_copy(board);
-                int last_score = get_locationscore(newboard,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(newboard,now_list[num].x,now_list[num].y,HUchess);
-                newboard[now_list[num].x][now_list[num].y] = AIchess;
-                int ltx2,lty2,rbx2,rby2;
-                ltx2 = ltx;
-                lty2 = lty;
-                rbx2 = rbx;
-                rby2 = rby;
-                afterchess_update(ltx2,lty2,rbx2,rby2,now_list[num].x,now_list[num].y);
-                if(layer == 1)
+                unsigned int key2 = key;
+                key2^=zobrist_list[AIchess][now_list[num].x][now_list[num].y];
+                int score2 = score;
+                hash_storage *hash = hash_set(key2,score2,layer);
+                if(hash == nullptr)
                 {
-                    int searchscore = search_DFS(search_generate(newboard,HUchess,ltx,lty,rbx,rby),layer+1,newboard,maxnum,lastmin,score + now_list[num].score-last_score,ltx2,lty2,rbx2,rby2);
-                    if(maxnum < searchscore)
+                    if(layer == 1)
                     {
-                        search_result.x = now_list[num].x;
-                        search_result.y = now_list[num].y;
-                        maxnum = searchscore;
+                        if(maxnum < score2)
+                        {
+                            search_result.x = now_list[num].x;
+                            search_result.y = now_list[num].y;
+                            maxnum = score2;
+                        }
+                    }
+                    else
+                    {
+                        maxnum = max(maxnum, score2);
                     }
                 }
                 else
                 {
-                    maxnum = max(maxnum, search_DFS(search_generate(newboard,HUchess,ltx,lty,rbx,rby),layer+1,newboard,maxnum,lastmin,score + now_list[num].score-last_score,ltx2,lty2,rbx2,rby2));
+                    int** newboard = search_copy(board);
+                    int last_score = get_locationscore(newboard,now_list[num].x,now_list[num].y,AIchess) - get_locationscore(newboard,now_list[num].x,now_list[num].y,HUchess);
+                    newboard[now_list[num].x][now_list[num].y] = AIchess;
+                    int ltx2,lty2,rbx2,rby2;
+                    ltx2 = ltx;
+                    lty2 = lty;
+                    rbx2 = rbx;
+                    rby2 = rby;
+                    afterchess_update(ltx2,lty2,rbx2,rby2,now_list[num].x,now_list[num].y);
+                    if(layer == 1)
+                    {
+                        score2 = search_DFS(key2,search_generate(newboard,HUchess,ltx,lty,rbx,rby),layer+1,newboard,maxnum,lastmin,score + now_list[num].score-last_score,ltx2,lty2,rbx2,rby2);
+                        if(maxnum < score2)
+                        {
+                            search_result.x = now_list[num].x;
+                            search_result.y = now_list[num].y;
+                            maxnum = score2;
+                        }
+                    }
+                    else
+                    {
+                        score2 = search_DFS(key2,search_generate(newboard,HUchess,ltx,lty,rbx,rby),layer+1,newboard,maxnum,lastmin,score + now_list[num].score-last_score,ltx2,lty2,rbx2,rby2);
+                        maxnum = max(maxnum, score2);
+                    }
+                    hash->score = score2;
+                    search_freeboard(newboard);
                 }
                 if(maxnum >= lastmin){
                     return maxnum;
                 }
-                search_freeboard(newboard);
                 num++;
             }
             return maxnum;

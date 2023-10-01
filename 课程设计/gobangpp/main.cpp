@@ -1,12 +1,13 @@
 #pragma GCC optimize(3,"Ofast","inline")
 //bug:下几个棋就不下了  已解决，原因：分数超过设置的最大值了
 //待办：注意着法生成的结果中已经有这个点的分数了，不用再算一次
+#include<iostream>
 //调用ai库
 #include "ai.h"
 //调用easyx图形库
 #include <graphics.h>
 
-const int gui_length = 30;
+const int gui_length = 40;
 
 void test_showboard(int** chessboard)
 {
@@ -46,10 +47,11 @@ void gui_drawchess(int x, int y, int player)
 int main()
 {
     int ltx,lty,rbx,rby;
-
+    unsigned int key = 717918283;
     int score = 0;
     //初始化棋盘
     int** chessboard = AI_start(AIBLACK, AIWHITE);
+
 /*
     chessboard[6][5] = chessboard[3][6] = chessboard[3][4]=chessboard[4][4] = 1;
     chessboard[4][5] = chessboard[5][4] = chessboard[6][3]=chessboard[7][2]=2;
@@ -74,7 +76,7 @@ int main()
     gui_drawwindow();
     //ai在靠近中心的位置落第一颗棋子
     chessboard[MAX/2][MAX/2] = AIchess;
-
+    key ^= zobrist_list[AIchess][MAX/2][MAX/2];
     ltx=lty=rbx=rby = MAX/2;
 
     score+=SE;
@@ -100,34 +102,37 @@ int main()
                             gui_drawchess(i, j, HUchess);
                             int location_score = get_locationscore(chessboard,j,i,AIchess)-get_locationscore(chessboard,j,i,HUchess);
                             chessboard[j][i] = HUchess;
+                            key ^= zobrist_list[HUchess][j][i];
                             afterchess_update(ltx,lty,rbx,rby,j,i);
                             int now_score = get_locationscore(chessboard,j,i,AIchess)-get_locationscore(chessboard,j,i,HUchess);
                             score = score + now_score - location_score;
                             if(score < -SA*0.7)
                             {
-                                printf("human win\n");
+                                printf("\nhuman win\n");
                                 getchar();
                                 return 0;
                             }
-                            printf("score: %d \n",score);
+                            printf("\nscore: %d \n",score);
 
                             time_dfs=0;
                             clock_t start,end;
                             start = clock();
-                            int search_score = search_DFS(search_generate(chessboard,AIchess,ltx,lty,rbx,rby),1,chessboard,-SCOREMAX, SCOREMAX, score,ltx,lty,rbx,rby);
+                            int search_score = search_DFS(key,search_generate(chessboard,AIchess,ltx,lty,rbx,rby),1,chessboard,-SCOREMAX, SCOREMAX, score,ltx,lty,rbx,rby);
                             end = clock();
                             time_dfs = (float)(end-start)/CLOCKS_PER_SEC;
-
-                            if(time_dfs < 0.04f && search_score<SA*0.7) //动态选择4层还是2层
+                            printf("t_2: %f \n",time_dfs);
+                            if(time_dfs < 0.05 && search_score<SA*0.7) //动态选择4层还是2层
                             {
                                 MAXlayer = 4;
-                                search_DFS(search_generate(chessboard,AIchess,ltx,lty,rbx,rby),1,chessboard,-SCOREMAX, SCOREMAX, score,ltx,lty,rbx,rby);
+                                search_DFS(key,search_generate(chessboard,AIchess,ltx,lty,rbx,rby),1,chessboard,-SCOREMAX, SCOREMAX, score,ltx,lty,rbx,rby);
                                 MAXlayer = 2;
+                                end = clock();
+                                time_dfs = (float)(end-start)/CLOCKS_PER_SEC;
+                                printf("t_4: %f \n",time_dfs);
                             }
-
-                            printf("dfs: %f \n",time_dfs);
                             location_score = get_locationscore(chessboard,search_result.x,search_result.y,AIchess)-get_locationscore(chessboard,search_result.x,search_result.y,HUchess);
                             chessboard[search_result.x][search_result.y] = AIchess;
+                            key ^= zobrist_list[AIchess][search_result.x][search_result.y];
                             afterchess_update(ltx,lty,rbx,rby,search_result.x,search_result.y);
                             now_score = get_locationscore(chessboard,search_result.x,search_result.y,AIchess)-get_locationscore(chessboard,search_result.x,search_result.y,HUchess);
                             score = score + now_score - location_score;
@@ -137,11 +142,10 @@ int main()
                             //编写胜利判断
                             //除了哈希表，想不出别的优化方案，只能是尝试结合多种方法优化着法生成函数，尽量让点位少，同时改变MAXlayer的判断逻辑，判断一下是奇数还是偶数，先突破到三层再说
                             //同时改写着法生成里的排序，改为自己写的快排或sort直接排序
-                            //另一种方式，不用随机数，固定一组数用来写哈希算法，同时在本地存储大量的运算好的结果，打开程序时先读入
                             gui_drawchess(search_result.y,search_result.x,AIchess);
                             if(score > SA*0.7)
                             {
-                                printf("computer win\n");
+                                printf("\ncomputer win\n");
                                 getchar();
                                 return 0;
                             }
