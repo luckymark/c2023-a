@@ -114,4 +114,4 @@ void gameover(){
     gotoxy(27,4);
     printf("Success!");
     getch();
-}
+} 

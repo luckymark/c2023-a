@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-
-int isPrime(int n);
+#include "isPrime.h"
 
 int main() {
     clock_t start_t,end_t;
@@ -18,16 +17,4 @@ int main() {
     total_t = (double)(end_t - start_t)/CLOCKS_PER_SEC;
     printf("The total running time: %lfs",total_t);
     return 0;
-}
-
-int isPrime(int n){
-    int isPrime = 1;
-    for(int i=2;i<n;i++){
-        int x = n%i;
-        if(x == 0){
-            isPrime = 0;
-            break;
-        }
-    }
-    return isPrime;
 }
