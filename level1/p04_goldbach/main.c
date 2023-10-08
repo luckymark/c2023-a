@@ -1,38 +1,45 @@
 #include<stdio.h>
+#include"isprime3.h"
 int main()
-{int x;
-    printf("è¯·ä»»æ„è¾“å…¥ä¸€ä¸ªå¶æ•°ï¼š");
+{int j;
+    int prime[1000]={2};
+    int m=1;
+    for(j=3;j<1000;j+=2)
+    {
+        if(isprime(j))
+        {
+            prime[m++]=j;
+        }
+    }
+    int x;
+    printf("ÇëÈÎÒâÊäÈëÒ»¸öÅ¼Êı£º");
     scanf("%d",&x);
-    if(x>2&&x<=100){
+    if(x>2&&x<=1000){
         if(x%2==0)
-        {int i;
-            int prime[24]={2,3,5,7,11,13,17,19,
-                           23,29,31,37,41,43,47,
-                           53,59,61,67,71,79,83,89,97};
-            for(i=0;i<24;i++)
-            {
-                int k=x-prime[i];
+        {
+            int i;
+            for(i=0;prime[i]!=0;i++) {
+                int k = x - prime[i];
                 int l;
-                for(l=2;l<k;l++)
-                {
-                    if(k%l==0)
-                        break;
-                }
-                if(k==l)
-                {
-                    printf("%d=%d+%d\n",x,prime[i],k);
+                if (k <= prime[i]) {
+                    for (l = 2; l < k; l++) {
+
+                    }
+                    if (k == l) {
+                        printf("%d=%d+%d\n", x, prime[i], k);
+                    }
                 }
             }
         }else{
-            printf("è¿™ä¸æ˜¯ä¸€ä¸ªå¶æ•°ï¼");
+            printf("Õâ²»ÊÇÒ»¸öÅ¼Êı£¡");
         }
 
 
-    }else if(x>100)
+    }else if(x>1000)
     {
-        printf("ä½ çš„æ•°æ®å¤ªå¤§äº†!");
+        printf("ÄãµÄÊı¾İÌ«´óÁË!");
     }else{
-        printf("ä½ çš„æ•°æ®å¤ªå°äº†");
+        printf("ÄãµÄÊı¾İÌ«Ğ¡ÁË");
     }
 
     return 0;
