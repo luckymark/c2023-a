@@ -1,21 +1,25 @@
-import numpy as np
-import torch
+from sklearn.datasets import load_digits
+import matplotlib.pyplot as plt
 
-images = open('train-images-idx3-ubyte','rb')
-images.read(16)
-img_data = images.read()
+digits = load_digits()
+images = digits.images
 
-img_array = np.frombuffer(img_data, dtype=np.uint8).reshape(-1,28,28)
-labels = open('train-labels-idx1-ubyte','rb')
-labels.read(8)
-label_data = labels.read()
+# 二值化
+thresh = images.mean() + 0.5 * images.std()
+binary_images = images > thresh
+binary_images = binary_images.astype(int)
 
-label_array = np.frombuffer(label_data, dtype=np.uint8)
-images_8x8 = []
-for img in img_array:
-    img_8x8 = img.reshape(28,28)//4
-    img_8x8 = (img_8x8 > 0) * 1
-    images_8x8.append(img_8x8)
+# 输出为.dat
+# 输出图像像素数据
+with open('images.dat', 'wb') as f:
+    for img in binary_images:
+        for i in range(8):
+            for j in range(8):
+                pixel = 0 if img[i,j] == 0 else 1
+                f.write(bytes([pixel]))
 
-data = torch.utils.data.TensorDataset(
-    torch.tensor(images_8x8), torch.tensor(label_array))
+            # 输出标签
+with open('labels.dat', 'wb') as f:
+    for label in digits.target:
+        f.write(bytes([label]))
+

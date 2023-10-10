@@ -7,4 +7,4 @@
 
 ### 参考：
 
-[神经网络入门](http://blog.csdn.net/zzwu/article/details/574931) 
+[神经网络入门](http://blog.csdn.net/zzwu--+/article/details/574931) 
