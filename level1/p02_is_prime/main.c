@@ -1,6 +1,6 @@
-#include <printf.h>
 
+#include"is_printf.h"
 int main() {
-    printf("hello world!\n");
+    is_printf();
     return 0;
 }
