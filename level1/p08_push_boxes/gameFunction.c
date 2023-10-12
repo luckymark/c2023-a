@@ -84,10 +84,12 @@ int allBack(char (*walls)[10],point target[],int targets){
     }
     return allBack;
 };
-void gameover(){
-    gotoxy(2*13,5);
-    printf("Game  Over");
+void gameover(int step){
+    gotoxy(27,2);
+    printf("Steps:%d",step);
     gotoxy(27,4);
     printf("Success!");
+    gotoxy(2*13,5);
+    printf("Game  Over");
     getch();
 }

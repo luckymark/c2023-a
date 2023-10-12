@@ -18,10 +18,12 @@ add_executable(p06_hanoi p06_hanoi/main.c)
 add_executable(p07_maze p07_maze/main.c)
 
 add_executable(p08_push_boxes p08_push_boxes/main.c
-        p08_push_boxes/gamefunction.c
-        p08_push_boxes/gamefunction.h
+        p08_push_boxes/gameFunction.c
+        p08_push_boxes/gameFunction.h
         p08_push_boxes/shellControl.h
-        p08_push_boxes/shellControl.c)
+        p08_push_boxes/shellControl.c
+        p08_push_boxes/maploader.c
+        p08_push_boxes/maploader.h)
 
 add_executable(p09_linked_list p09_linked_list/main.c
         p09_linked_list/linked_list.c
