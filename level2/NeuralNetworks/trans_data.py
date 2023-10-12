@@ -1,5 +1,4 @@
 from sklearn.datasets import load_digits
-import matplotlib.pyplot as plt
 
 digits = load_digits()
 images = digits.images

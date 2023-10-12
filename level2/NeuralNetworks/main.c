@@ -3,7 +3,6 @@
 #include <conio.h>
 #include <time.h>
 #include "extract_methods.h"
-#include "data_process.h"
 #include "Network.h"
 
 #define WIDTH 8
@@ -15,7 +14,7 @@ struct feat {
     //y质心
     double y_cen;
     //扫描线
-    int count[8];
+    int count[4];
     //傅里叶特征
     double* fft;
     //标签
@@ -93,16 +92,16 @@ void draw() {
                 break;
         }
     }
-    struct feat features;
-    features.x_cen = extract_x_cen(Canvas);
-    features.y_cen = extract_y_cen(Canvas);
-    features.count[0] = scan_0(Canvas);
-    features.count[1] = scan_90(Canvas);
-    features.count[2] = scan_45(Canvas);
-    features.count[3] = scan_135(Canvas);
-    features.fft = EFT(Canvas);
-    features.label = 0;
-    sample_trans(features);
+    struct feat feature;
+    feature.x_cen = extract_x_cen(Canvas);
+    feature.y_cen = extract_y_cen(Canvas);
+    feature.count[0] = scan_0(Canvas);
+    feature.count[1] = scan_90(Canvas);
+    feature.count[2] = scan_45(Canvas);
+    feature.count[3] = scan_135(Canvas);
+    feature.fft = EFT(Canvas);
+    feature.label = 0;
+    sample_trans(feature);
     data_read();
     cal_r1();
     cal_r2();
@@ -110,44 +109,65 @@ void draw() {
     cal_r4();
     printf("\nThe number you enter is %d",output());
 }
+
 int main() {
-    printf("\nChoose your next action\n1 - Paint Mode\n2 - Data Processing Mode\n3 - Training Mode\nAny other characters - Exit\n Enter your choice: ");
+    printf("\nChoose your next action\n1 - Paint Mode\n2 - Training Mode\nAny other characters - Exit\n Enter your choice: ");
     int choice;
     time_t start, end;
-    struct feat feature[1797];
+    struct feat features[1797];
     scanf("%d",&choice);
     switch (choice) {
         case 1:
-            para_reset();
             paint(Canvas);
             draw();
             break;
         case 2:
-            printf("\nExplanation: the data should be stored in files named \"images.dat\" and \"labels.dat\", \nand after converting the data, it will be out put as a \"sample.dat\" file.\n");
-            system("pause");
-            data_process();
-            break;
-        case 3:
             time(&start);
-            para_reset();
-            FILE * fp;
-            fp = fopen("sample.dat","rb");
-            for (int i = 0; i < 1797; ++i) {
-                fread(&feature[i],sizeof(struct feat),1,fp);
+    FILE* img_file = fopen("images.dat", "rb");
+    unsigned char pixels[8][8];
+    int images[1797][8][8];
+    for(int n=0; n<1797; n++) {
+        for(int i=0; i<8; i++) {
+            for(int j=0; j<8; j++) {
+                fread(&pixels[i][j], 1, 1, img_file);
+                images[n][i][j] = pixels[i][j];
             }
-            fclose(fp);
-            for (int i = 0; i < 1797; ++i) {
-                sample_trans(feature[i]);
-                cal_r1();
-                cal_r2();
-                cal_r3();
-                cal_r4();
-                cal_D_1();
-                cal_D_2();
-                Adam(i);
-            }
-            data_write();
-            printf("Done.");
+        }
+    }
+    int labels[1797];
+    FILE* label_file = fopen("labels.dat", "rb");
+    unsigned char label;
+    for(int n=0; n<1797; n++) {
+        fread(&label, 1, 1, label_file);
+        labels[n] = label;
+    }
+    fclose(img_file);
+    fclose(label_file);
+    struct feat features[1797];
+    for (int i = 0; i < 1797; ++i) {
+        features[i].x_cen = extract_x_cen(images[i]);
+        features[i].y_cen = extract_y_cen(images[i]);
+        features[i].count[0] = scan_0(images[i]);
+        features[i].count[1] = scan_90(images[i]);
+        features[i].count[2] = scan_45(images[i]);
+        features[i].count[3] = scan_135(images[i]);
+        features[i].fft = EFT(images[i]);
+        features[i].label = labels[i];
+    }
+    para_reset();
+    for (int i = 0; i < 1797; ++i) {
+        sample_trans(features[i]);
+        cal_r1();
+        cal_r2();
+        cal_r3();
+        cal_r4();
+        cal_D_2();
+        cal_D_1();
+        Adam((double)i);
+    }
+    data_write();
+            time(&end);
+            printf("Done.(%.3f seconds)", difftime(end,start));
             break;
         default:
             printf("\nExited.\n");

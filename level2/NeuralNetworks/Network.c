@@ -25,7 +25,7 @@ struct feat {
     //y质心
     double y_cen;
     //扫描线
-    int count[8];
+    int count[4];
     //傅里叶特征
     double* fft;
     //标签
@@ -321,7 +321,7 @@ void data_write() {
         }
     }
     for (int i = 0; i < C_; ++i) {
-        fwrite(&B1[i],sizeof(double),1,fp);
+        fwrite(&B2[i],sizeof(double),1,fp);
     }
     fclose(fp);
 }
