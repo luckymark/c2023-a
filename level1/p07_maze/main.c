@@ -10,8 +10,10 @@ int main()
         scanf_s("%d", &input);
         if (input == 1)
         {
-            printf("Please remember:'#' is wall,'&' is player,'@' is exit\n");
-            printf("If you can't get out of the maze,please press 'Tab' to find way\n");
+            gotoxy(2*SIDE+5,3);
+            printf("Please remember:'#' is wall,'&' is player,'@' is exit");
+            gotoxy(2*SIDE+5,4);
+            printf("If you can't get out of the maze,please press 'Tab' to find way");
             Init_maze(maze);
             srand((unsigned int)time(NULL));
             int ori1 = rand() % (SIDE - 2) + 2;
@@ -22,21 +24,22 @@ int main()
             out = Out(maze);
             maze[out][SIDE] = 1;
             maze[out][SIDE + 1] = 3;
+            gotoxy(0,0);
             Print(maze, player);
             Player* pi = &player;
-            if (_kbhit)
-            {
-                int ch1 = _getch();
-                if (ch1 == 224)
-                {
-                    Move(maze, pi, SIDE, out);
-                }
-            }
-            system("cls");
-            Print(maze, player);
+            clock_t start = clock();
+            int temp=-1;
             while (1)
             {
-                if (_kbhit)
+                clock_t point = clock();
+                int time = (point - start) / 1000;
+                if(time==temp+1)
+                {
+                    temp=time;
+                    gotoxy(0, 0);
+                    printf("The time you use now is %d min %2d s", temp/60,temp%60);
+                }
+                if (_kbhit())
                 {
                     int ch1 = _getch();
                     if (ch1 == 224)
@@ -54,10 +57,14 @@ int main()
                 if (maze[player.y][player.x] == 3)
                     break;
             }
-            system("cls");
             Color(6);
-            printf("Congratulation!\nYou are winning.\n\n");
+            gotoxy(2*SIDE+5,5);
+            printf("Congratulation!");
+            gotoxy(2*SIDE+5,6);
+            printf("You are winning.");
             Color(7);
+            Sleep(5000);
+            system("cls");
         }
         else if (input == 2)
             break;
