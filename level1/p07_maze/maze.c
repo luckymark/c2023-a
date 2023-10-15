@@ -150,8 +150,12 @@ void Move(int maze[SIDE + 2][SIDE + 2], Player* pi, int x, int y)
 }
 void Menu()
 {
-    printf("Welcome to MAZE game!\n");
-    printf("Please choose:\n1.play game\n2.exit\n");
+    gotoxy(2*SIDE+5,0);
+    printf("Welcome to MAZE game!");
+    gotoxy(2*SIDE+5,1);
+    printf("Please choose:");
+    gotoxy(2*SIDE+5,2);
+    printf("1.play game    2.exit     ");
 }
 void Color(int x)
 {
