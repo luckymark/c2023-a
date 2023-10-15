@@ -1,4 +1,4 @@
-#define SIDE 47//宏定义方便改变迷宫的边长来改变迷宫的难度
+#define SIDE 42//宏定义方便改变迷宫的边长来改变迷宫的难度
 #define UP 72
 #define DOWN 80
 #define LEFT 75
@@ -27,4 +27,3 @@ void Color(int x);//控制字体颜色的函数
 void gotoxy(int x, int y);//设置光标位置
 void Find_way(int maze[SIDE + 2][SIDE + 2], int way[SIDE + 2][SIDE + 2], int x, int y, Player player,int count);//实现自动寻路的函数
 void Print_way(int way[SIDE + 2][SIDE + 2], int maze[SIDE + 2][SIDE + 2], Player player,int out);//打印路径的函数
-
