@@ -16,6 +16,7 @@ add_executable(p07_maze p07_maze/main.c p07_maze/maze.c)
 
 add_executable(p08_push_boxes p08_push_boxes/main.c p08_push_boxes/push_boxes.c)
 
-add_executable(p09_linked_list p09_linked_list/main.c)
+add_executable(p09_linked_list p09_linked_list/main.c p09_linked_list/linked.c)
 
-add_executable(p10_warehouse p10_warehouse/main.c)
+add_executable(p10_warehouse p10_warehouse/main.c
+        p10_warehouse/warehouse.c)
