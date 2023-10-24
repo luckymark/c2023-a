@@ -24,12 +24,12 @@ int multi_find_list(List *list, int data, int count);
 int main() {
     List *list = create_list(3);
     set_list(list, 0, 1);
-    set_list(list, 1, 2);
-    set_list(list, 2, 2);
+    set_list(list, 1, 5);
+    set_list(list, 2, 5);
     list = reverse_list(list);
-    int index_of_2 = find_list(list, 2);
+    int index_of_2 = find_list(list, 5);
     assert(index_of_2 == 0);
-    int index_of_second_2 = multi_find_list(list, 2, 2);
+    int index_of_second_2 = multi_find_list(list, 5, 2);
     assert(index_of_second_2 == 1);
     return 0;
 }
@@ -38,7 +38,7 @@ int multi_find_list(List *list, int data, int count) {
     List *now = list;
     int index = 0;
     while (now->next != NULL) {
-        if (now->data == data){
+        if (now->data == data) {
             --count;
             if (count == 0) return index;
         }
