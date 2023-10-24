@@ -18,8 +18,4 @@ int main() {
     return 0;
 }
 
-bool isPrime(int input) {
-    for (int i = 2; i * i <= input; ++i)
-        if (input % i == 0) return false;
-    return true;
-}
+
