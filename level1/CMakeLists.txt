@@ -31,4 +31,6 @@ add_executable(p09_linked_list p09_linked_list/main.c
 
 add_executable(p10_warehouse p10_warehouse/main.c
         p10_warehouse/shellControl.c
-        p10_warehouse/shellControl.h)
+        p10_warehouse/shellControl.h
+        p10_warehouse/function.c
+        p10_warehouse/function.h)
