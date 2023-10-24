@@ -271,7 +271,6 @@ void ex_warehouse(){
                         fseek(list,-1,SEEK_CUR);
                         fputc(fgetc(list),new);
                     }
-
                     //Delete the possible empty category.
                     fseek(new,p_category-1,SEEK_SET);
                     for(int i;(i= fgetc(new))!=':';);
