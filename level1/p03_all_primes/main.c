@@ -9,6 +9,8 @@
 #define TIMEB timeb
 #endif
 
+#include "../p02_is_prime/Prime.h"
+
 enum {
     PRIME_MAX_NUM = 1000
 };
@@ -38,6 +40,9 @@ int main() {
 
     ftime(&ed_ms);
     time(&ed_s);
+
+    //extract test
+    printf(isPrime(100) ? "yes" : "no");
 
     elapse = (ed_s * 1000 + ed_ms.millitm) - (st_s * 1000 + st_ms.millitm);
     printf("\nelapsed time: %lldms\n", elapse);
