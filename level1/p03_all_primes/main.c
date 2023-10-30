@@ -1,5 +1,6 @@
-#include<stdio.h>
+
 #include<time.h>
+#include "isprime.h"
 #define MAX 1010
 int num[MAX];
 int main()

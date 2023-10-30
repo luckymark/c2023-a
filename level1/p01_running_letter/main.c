@@ -10,7 +10,7 @@ int main()
     int step = 1;
     while(1)
     {
-        for(int i = 1; i <= x; i++)
+        for(int i = 1; i <= x+3; i++)
         {
             if(i == now)
             {
