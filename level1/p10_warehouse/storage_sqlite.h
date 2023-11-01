@@ -18,5 +18,6 @@ bool sql_insert(Goods**, int);
 bool sql_update(Goods**, int);
 Goods** sql_select(char*, char*);
 bool sql_delete(char*, char*);
+bool sql_close();
 
 #endif //C2023_CHALLENGE_STORAGE_SQLITE_H

@@ -20,11 +20,12 @@ int main() {
     printf("update goods: %s\n", sql_update(pGoods, 4)?"success":"fail");
     Goods ** new_goods = sql_select(good3.type, NULL);
     if(new_goods!=NULL&&new_goods[0]!=NULL) {
-        printf("select good1: good(type='%s', name='%s', price=%.2f, amount=%d, note='%s')\n", new_goods[0]->type, new_goods[0]->name, new_goods[0]->price, new_goods[0]->amount, new_goods[0]->note);
+        printf("select good1: good(type='%s', FILE_NAME='%s', price=%.2f, amount=%d, note='%s')\n", new_goods[0]->type, new_goods[0]->name, new_goods[0]->price, new_goods[0]->amount, new_goods[0]->note);
     }else printf("select good1: (null)\n");
     printf("delete goods: %s\n",  sql_delete(good1.type, NULL)?"success":"fail");
     new_goods = sql_select(good1.type, NULL);
     if(new_goods!=NULL&&new_goods[0]!=NULL) {
-    printf("select good1: good(type='%s', name='%s')\n", new_goods[0]->type, new_goods[0]->name);}
+    printf("select good1: good(type='%s', FILE_NAME='%s')\n", new_goods[0]->type, new_goods[0]->name);}
     else printf("select good1: (null)\n");
+    sql_close();
 }

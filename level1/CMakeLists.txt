@@ -17,7 +17,9 @@ add_executable(p06_hanoi p06_hanoi/main.c)
 
 add_executable(p07_maze p07_maze/main.c)
 
-add_executable(p08_push_boxes p08_push_boxes/main.c)
+add_executable(p08_push_boxes p08_push_boxes/main.c
+        p08_push_boxes/push_boxes.c
+        p08_push_boxes/push_boxes.h)
 
 add_executable(p09_linked_list p09_linked_list/main.c
         p09_linked_list/LinkList.c
@@ -25,11 +27,9 @@ add_executable(p09_linked_list p09_linked_list/main.c
 )
 
 add_executable(p10_warehouse p10_warehouse/main.c
-        p10_warehouse/hashmap.h
         p10_warehouse/sqlite3.h
         p10_warehouse/sqlite3.c
         p10_warehouse/storage_sqlite.h
         p10_warehouse/storage_sqlite.c
-        p10_warehouse/hashmap.c
         p10_warehouse/goods.h
 )

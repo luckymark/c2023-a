@@ -2,5 +2,6 @@
 /cmake-build-debug/
 
 *.exe
+*.py*
 sqlite-source-code
 test.c

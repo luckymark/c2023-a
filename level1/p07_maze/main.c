@@ -16,7 +16,7 @@
 #define IN_STACK (-2)
 int place_x = 2;
 int place_y = 0;
-int map[SIZE_X][SIZE_Y];
+int** map;//[SIZE_X][SIZE_Y];
 
 struct QNode{
     int x;
@@ -59,6 +59,8 @@ int main() {
 }
 
 void init_map(int X, int Y) {
+    map = (int**)malloc(X*Y*sizeof(int));
+    for(int x=0; x<X; x++)map[x] = (int*)malloc(Y*sizeof(int));
     for (int x = 0; x < X; x++)
         for (int y = 0; y < Y; y++)
             map[x][y] = (int) (x % 2 && y % 2 ? PATH : WALL);
