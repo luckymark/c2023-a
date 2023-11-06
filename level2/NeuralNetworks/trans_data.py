@@ -1,3 +1,4 @@
+# 获取训练集，转化为二值化图像并输出为.dat文件供C语言程序使用
 from sklearn.datasets import load_digits
 
 digits = load_digits()

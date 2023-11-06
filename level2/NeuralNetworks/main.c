@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <time.h>
 #include "extract_methods.h"
-#include "Network.h"
+#include "Full_Connected.h"
 
 #define WIDTH 8
 #define HEIGHT 8

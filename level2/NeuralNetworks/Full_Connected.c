@@ -1,11 +1,14 @@
-//
-// Created by Administrator on 2023/10/4 0004.
-//
+/*
+ * 此为全连接层
+ * 使用ReLU激活函数
+ * 以及使用Softmax激活函数作为分类器
+ * 使用Adam自适应学习率进行优化
+ */
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
 
-#include "Network.h"
+#include "Full_Connected.h"
 
 //隐层节点数
 #define N_ 8
