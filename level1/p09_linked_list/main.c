@@ -1,66 +1,82 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct node{
-    int data;
+
+typedef struct node {
+    int value;
     struct node *next;
-}Linklist;
-int befound[80];
-Linklist * listmake (int n){
-      Linklist *head,*node,*end;
-      head=(Linklist*)malloc(sizeof(Linklist*));
-      end=head;
-      scanf("%d",&head->data);
-      for(int i=1;i<=n-1;i++){
-          node=(Linklist*)malloc(sizeof(Linklist*));
-          scanf("%d",&node->data);
-          end->next=node;
-          end=node;
-      }
-      end->next=NULL;
-      return head;
+} LinkedList;
+
+LinkedList *LinkedListCreate() {
+    LinkedList *q = (LinkedList *) malloc(sizeof(LinkedList));
+    q->next = NULL;
+    return q;
 }
-Linklist * listhead;
-void updown(){
-     Linklist *s=listhead;
-     Linklist *last=listhead;
-     while(s->next){
-         Linklist *next=s->next;
-         s->next=last;
-         last=s;
-         s=next;
-     }
-     s->next=last;
-     listhead->next=NULL,listhead=s;
+
+int LinkedListIsEmpty(LinkedList *q) {
+    return q->next == NULL;
 }
-int listfind(int x){
-    Linklist *s=listhead;
-    int cnt=0;
-    while(s->next){
+
+LinkedList *LinkedListGetEnd(LinkedList *q) {
+    LinkedList *a = q;
+    while (a->next != NULL) {
+        a = a->next;
+    }
+    return a;
+}
+
+void LinkedListNodeAdd(int value, LinkedList *q) {
+    LinkedList *end = LinkedListGetEnd(q);
+    LinkedList *node = (LinkedList *) malloc(sizeof(LinkedList));
+    node->value = value, node->next = NULL;
+    end->next = node;
+}
+
+void LinkedListPrint(LinkedList *q) {
+    LinkedList *a = q->next;
+    while (a->next != NULL) {
+        printf("%d ", a->value);
+        a = a->next;
+    }
+    printf("%d\n", a->value);
+}
+
+void LinkedListUpDown(LinkedList *q) {
+    LinkedList *a = q->next;
+    LinkedList *last = NULL;
+    while (a->next != NULL) {
+        LinkedList *next = a->next;
+        a->next = last;
+        last = a;
+        a = next;
+    }
+    a->next = last;
+    q->next = a;
+}
+
+int LinkedListSearch(int value, int index, LinkedList *q) {
+    LinkedList *a = q->next;
+    int cnt = -1, count = 0;
+    while (count < index && a->next != NULL) {
         cnt++;
-        if(s->data==x && !befound[cnt]){
-            befound[cnt]=1;
-            return cnt;
-        }
+        if (a->value == value)count++;
+        a = a->next;
     }
+    if (a->value == value && a->next==NULL)count++;
+    if (count == index)return cnt;
+    return -1;
 }
-int main(){
-    int n;
-    scanf("%d",&n);
-    listhead=listmake(n);
-    Linklist *s=listhead;
-    while(s->next){
-        printf("%d\n",s->data);
-        s=s->next;
-    }
-    printf("%d\n",s->data);
-    updown();
-    s=listhead;
-    while(s->next){
-        printf("%d\n",s->data);
-        s=s->next;
-    }
-    printf("%d\n",s->data);
-    int first=listfind(5);
-    int second=listfind(5);
-    while(1){}
+
+//链表头不放任何值，只用来访问链表
+int main() {
+    LinkedList *Q = LinkedListCreate();
+    LinkedListNodeAdd(1, Q);
+    LinkedListNodeAdd(2, Q);
+    LinkedListNodeAdd(3, Q);
+    LinkedListNodeAdd(5, Q);
+    LinkedListNodeAdd(5, Q);
+    LinkedListPrint(Q);
+    LinkedListUpDown(Q);
+    LinkedListPrint(Q);
+    printf("%d\n", LinkedListSearch(5, 1, Q));
+    printf("%d\n", LinkedListSearch(5, 2, Q));
 }
