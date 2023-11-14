@@ -7,8 +7,15 @@ extern "C" {
 }
 #include <stdio.h>
 #include <stdlib.h>
-#include "board.h"
-int win = 0;
+#include "board_paint.h"
 
 int main() {
+    resetBoard(REAL);
+    drawBoard();
+    for (int i = 0; i < 5; ++i) {
+        playerMove();
+    }
+    game_terminate(REAL);
+    drawBoard();
+    system("pause");
 }

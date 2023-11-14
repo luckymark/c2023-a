@@ -5,4 +5,4 @@ include_directories(${EasyX_DIR}/include)
 link_directories(${EasyX_DIR}/lib64)
 
 link_libraries(libEasyX.a libgdi32.a libole32.a)
-add_executable(gobang main.cpp board.cpp board.h MCTS.c MCTS.h)
+add_executable(gobang main.cpp board_paint.cpp board_paint.h MCTS.c MCTS.h board.c board.h)

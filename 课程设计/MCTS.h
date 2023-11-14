@@ -1,43 +1,73 @@
-//
-// Created by Administrator on 2023/10/26 0026.
-//
 
 #ifndef C2023_CHALLENGE_MCTS_H
 #define C2023_CHALLENGE_MCTS_H
 
-//每个节点的最大子节点数量
-#define childrenNum 225
-//节点
-typedef struct node {
-    //价值
-    int value;
-    //访问次数
-    int S_times;
-    //父节点
-    struct node* father;
-    //子节点
-    struct node* children[childrenNum];
-} Node;
+#include "board.h"
 
-//设置当前访问节点
+//宏定义区
+
+//结构区
+
+//全局变量区
+// 当前访问节点
+extern Node* target;
+
+// 策略分布
+extern double policy[SIZE][SIZE];
+
+// 价值分布
+extern double value[SIZE][SIZE];
+
+//外部可调用函数
+// 设定访问节点
 void setTarget(Node* input);
 
-//创建子节点
-void createNode(int value, int S_times);
+// 创建根节点
+void creatRoot(int x, int y, int type);
 
-//判断是否是叶节点
+// 释放内存
+void freeTree(Node* input);
+
+// 继承根节点
+void inheritRoot();
+
+// 为当前节点创建子节点
+void createNode(int x, int y, double Q, double v, int N, double P, double P_real, int type);
+
+// 判断当前节点是否是叶节点
 int is_leaf();
 
-//UCT算法搜索
-void UCT(int n);
+// 根据UCT算法选择节点
+void chooseNode();
 
-//反向传播更新访问次数
+// 判断当前节点是否为根节点
+int is_root();
+
+// 判断当前节点是否为下一步行动节点
+int is_next_move();
+
+// 返回根节点
+Node* root();
+
+// 回退至根节点
+void back_to_root();
+
+// 反向传播更新访问次数
 void back_times();
 
-//反向传播更新价值
+// 根据模拟结果更新节点价值
 void back_value();
 
-//输出target向量
-Node* outputTarget();
+// UCT算法搜索
+void UCT();
+
+// 神经网络接口
+void NeutralNetwork();
+
+// 展开节点
+void expand();
+
+// 评估和回传
+void EstimateAndBack();
 
 #endif //C2023_CHALLENGE_MCTS_H
