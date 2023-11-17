@@ -49,23 +49,24 @@ typedef struct node {
 
 //历史棋盘数据
 typedef struct history_chessboard_data {
-    int B1[SIZE][SIZE];
-    int W1[SIZE][SIZE];
-    int B2[SIZE][SIZE];
-    int W2[SIZE][SIZE];
-    int B3[SIZE][SIZE];
-    int W3[SIZE][SIZE];
-    int B4[SIZE][SIZE];
-    int W4[SIZE][SIZE];
-    int B5[SIZE][SIZE];
-    int W5[SIZE][SIZE];
-    int B6[SIZE][SIZE];
-    int W6[SIZE][SIZE];
-    int B7[SIZE][SIZE];
-    int W7[SIZE][SIZE];
-    int B8[SIZE][SIZE];
-    int W8[SIZE][SIZE];
-    //当前落子人（黑色为1，白色为2）
+    //X代表当前棋手的历史落子，Y代表对方棋手的历史落子
+    int X1[SIZE][SIZE];
+    int Y1[SIZE][SIZE];
+    int X2[SIZE][SIZE];
+    int Y2[SIZE][SIZE];
+    int X3[SIZE][SIZE];
+    int Y3[SIZE][SIZE];
+    int X4[SIZE][SIZE];
+    int Y4[SIZE][SIZE];
+    int X5[SIZE][SIZE];
+    int Y5[SIZE][SIZE];
+    int X6[SIZE][SIZE];
+    int Y6[SIZE][SIZE];
+    int X7[SIZE][SIZE];
+    int Y7[SIZE][SIZE];
+    int X8[SIZE][SIZE];
+    int Y8[SIZE][SIZE];
+    //当前落子人
     int type;
 } HCD;
 
@@ -85,11 +86,14 @@ extern int start_y;
 extern int end_x;
 extern int end_y;
 
-// 历史棋盘数据(实际)
-extern HCD HCD_real;
+//神经网络输入
+extern HCD NN_input;
 
-//历史棋盘数据(模拟)
-extern HCD HCD_virtual;
+//历史棋盘数据(实际)
+extern int Board_History_Real[8][SIZE][SIZE];
+
+//历史棋盘数据(虚拟)
+extern int Board_History_Virtual[8][SIZE][SIZE];
 
 //函数区
 //重置棋盘
@@ -102,12 +106,12 @@ void game_terminate(int type);
 void reset_HCD(int type);
 
 // 记录历史棋盘数据
-void write_chessboard_data(int B_type, int D_type);
+void write_chessboard_data(int D_type);
 
-//直接对棋盘落子
+//数据转录
+void data_trans(int B_type,int D_type);
+
+//落子
 void chess(int x,int y,int B_type,int D_type);
-
-//根据节点对棋盘落子
-void node_chess(Node* input,int D_type);
 
 #endif //GOBANG_BOARD_H

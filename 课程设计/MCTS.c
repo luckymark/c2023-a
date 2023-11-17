@@ -83,7 +83,7 @@ void inheritRoot() {
     }
     free(target->father);
     target->father = NULL;
-    node_chess(target,REAL);
+    chess(target->X,target->Y,target->type,REAL);
 }
 
 //为当前节点创建一个子节点
@@ -223,6 +223,7 @@ void expand() {
 
 //评估与回传
 void EstimateAndBack() {
+    data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),REAL);
     /*
      * 此处应根据当前实际棋盘状态进行一次神经网络评估
      */
@@ -240,7 +241,8 @@ void EstimateAndBack() {
         //存储下一步落子颜色
         int type = target -> type;
         //落子
-        node_chess(target,VIRTUAL);
+        chess(target->X,target->Y,target->type,VIRTUAL);
+        data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),VIRTUAL);
         //开始评估
         for (int j = 0; j < MCTS_times; ++j) {
             /*
@@ -251,7 +253,8 @@ void EstimateAndBack() {
             //选择
             UCT();
             //落子
-            node_chess(target,VIRTUAL);
+            chess(target->X,target->Y,target->type,VIRTUAL);
+            data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),VIRTUAL);
             //判断游戏是否到达终局
             game_terminate(VIRTUAL);
             if (win != 0) {
@@ -280,4 +283,6 @@ void EstimateAndBack() {
          * 更新神经网络参数
          */
     }
+    //评估结束，返回根节点
+    back_to_root();
 }
