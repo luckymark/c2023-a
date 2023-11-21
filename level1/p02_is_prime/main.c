@@ -5,9 +5,9 @@ int main(){
     int x;
     scanf("%d",&x);
     if (isprime(x)) {
-        printf("ÊÇËØÊı");
+        printf("æ˜¯ç´ æ•°");
     }else{
-        printf("²»ÊÇËØÊı");
+        printf("ä¸æ˜¯ç´ æ•°");
     }
     return 0;
 }
