@@ -1,12 +1,13 @@
 //
 // Created by ycm on 2023/9/29.
 //
+#ifndef C2023_CHALLENGE_LINKLIST_H
+#define C2023_CHALLENGE_LINKLIST_H
+
 #include "stdlib.h"
 #include "stdio.h"
 #include "stdbool.h"
-#include <assert.h>
-#ifndef C2023_CHALLENGE_LINKLIST_H
-#define C2023_CHALLENGE_LINKLIST_H
+#include "assert.h"
 
 typedef struct LinkNode {
     struct LinkNode *next;
@@ -19,7 +20,7 @@ typedef struct LinkList {
     unsigned int size;
 }LinkList;
 
-LinkList *createLinkList();
+LinkList *createLinkList(void);
 LinkList *reversedLinkList(LinkList*);
 void* searchLinkList(LinkList*, unsigned int);
 LinkList *appendLinkList(LinkList*, unsigned int, void*);

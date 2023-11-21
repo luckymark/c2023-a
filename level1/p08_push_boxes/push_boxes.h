@@ -36,6 +36,7 @@ void draw_map(char** map/*, Place size*/);
 char move(char** map, /*Place,*/ Place, unsigned * score);
 char** read_map(char* filename);
 Place read_size(char* filename);
+void destroy_map(char** map);
 
 typedef struct {
     char* name;

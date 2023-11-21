@@ -1,5 +1,5 @@
 #include "stdio.h"
-#define MAX_PLACE 3
+#define MAX_PLACE 4
 
 void move(char, char, typeof (MAX_PLACE));
 static typeof (MAX_PLACE) Hanoi[3] = {MAX_PLACE};

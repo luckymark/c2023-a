@@ -4,7 +4,7 @@
 
 #include "push_boxes.h"
 
-char FILE_NAME[] = "001.bin";
+//char FILE_NAME[] = "001.bin";
 Place player = {0, 0};
 Place MAP_SIZE = {0,0};
 Place goals[200] = {};
@@ -15,12 +15,16 @@ unsigned box_num = 0;
 char** init_map(char* filename){
     MAP = read_map(filename);
 //    MAP_SIZE = read_size(filename);
+    if(MAP == NULL){
+        return NULL;
+    }
     unsigned igoal = 0;
     for(unsigned x=0;x<MAP_SIZE.x;x++)for(unsigned y=0;y<MAP_SIZE.y;y++){
             switch (MAP[x][y]) {
                 case PLAYER: player.x = x;player.y = y;break;
                 case BOX: box_num += 1;break;
                 case GOAL: goals[igoal].x = x;goals[igoal++].y = y;break;
+                case FILL: box_num += 1;goals[igoal].x = x;goals[igoal].y = y;bgoals[igoal++] = true;break;
                 default:break;
             }
     }
@@ -154,7 +158,20 @@ Place read_size(char* filename){
     unsigned res = fread(&X, sizeof(unsigned), 1, pfile);
     res += fread(&Y, sizeof(unsigned), 1, pfile);
     if (res != 2) {fprintf(stderr, "ERROR: cannot read file '%s'\n", filename);return blank_place;}
+    return MAP_SIZE;
 }
+
+void destroy_map(char** map){
+    unsigned i;
+    if(map!=NULL){
+        for(i = 0; i < MAP_SIZE.x; i++)free(map[i]);
+        free(map);
+    }
+    for(i=0;i<box_num;i++)bgoals[i]=0;
+    box_num=0;
+    player=MAP_SIZE=(Place){0,0};
+}
+
 
 void write_score(char* filename, NameScore*);
 NameScore* read_score(char* filename, unsigned length);

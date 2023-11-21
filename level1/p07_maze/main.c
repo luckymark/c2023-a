@@ -42,7 +42,7 @@ int main() {
     int ch;
     while ((ch = getch()) != 0x1B) /* ESC to quit, up-72 down-80 left-75 right-77 */
     {
-        if (ch == 224) {
+        if (ch == 224||ch==0) {
             ch = getch();
             char tmp = 0;
             if (ch == 72)tmp = move(-1, 0);

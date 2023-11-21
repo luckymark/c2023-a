@@ -19,4 +19,9 @@ add_executable(queue
         level0/Queue/LifoQueue.h)
 add_executable(caculater level0/caculater/calculator.c level0/caculater/calculator.h
         level0/caculater/main.c
-        level0/caculater/LifoQueue.c)
+        level0/caculater/LifoQueue.c
+        level0/hashMap/HashMap.cpp
+        level0/hashMap/HashMap.h)
+add_executable(BigNum level0/BigNum/main.c
+        level0/BigNum/BigNum.c
+        level0/BigNum/BigNum.h)
