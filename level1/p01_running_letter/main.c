@@ -2,11 +2,12 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<windows.h>
 #define N 40
 int main() {
     int i,j,k;
     char str[N];
-    printf("请输入一个字符串:");
+    printf("请输入一串字符串:");
     gets(str);
     for(i=1;i<50;i++)
     {
