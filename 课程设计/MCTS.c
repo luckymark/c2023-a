@@ -21,6 +21,17 @@ double value[SIZE][SIZE];
 //策略分布
 double policy[SIZE][SIZE];
 
+//无用の蜜汁小函数（返回当前根节点所有子节点的搜索次数综合）
+double sum_N() {
+    double sum = 0;
+    for (int i = 0; i < childrenNum; ++i) {
+        if (target->children[i] != NULL) {
+            sum = (double) target->children[i]->N;
+        }
+    }
+    return sum;
+}
+
 //设定访问节点
 void setTarget(Node* input) {
     target = input;
@@ -269,7 +280,7 @@ void EstimateAndBack() {
             //回传
             back_value();
         }
-        //释放内存，清除无用节点
+        //释放内存，清除用无节点
         while (!is_next_move()) {
             target = target->father;
         }
@@ -279,10 +290,27 @@ void EstimateAndBack() {
                 target->children[j] = NULL;
             }
         }
-        /*
-         * 更新神经网络参数
-         */
     }
     //评估结束，返回根节点
     back_to_root();
+    //生成先验落子概率与先验价值向量、落子概率与价值向量
+    int count = 0;
+    for (int i = 0; i < childrenNum; ++i) {
+        if (target->children[i] != NULL) {
+            count++;
+        }
+    }
+    double* P_CNN = (double*) malloc(count* sizeof(double ));
+    double* P_MCTS = (double*) malloc(count* sizeof(double ));
+    double* V_CNN = (double*) malloc(count*sizeof(double ));
+    double* V_MCTS = (double*) malloc(count*sizeof(double ));
+    for (int i = 0; i < count; ++i) {
+        P_CNN[i] = target->children[i]->P;
+        V_CNN[i] = target->children[i]->v;
+        P_MCTS[i] = ((double)target->children[i]->N)/sum_N();
+        V_MCTS[i] = target->children[i]->Q;
+    }
+    /*
+    * 更新神经网络参数
+    */
 }
