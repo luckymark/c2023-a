@@ -19,7 +19,7 @@ int end_x = 0;
 int end_y = 0;
 
 //神经网络输入
-HCD NN_input;
+int NN_input[17][SIZE][SIZE];
 
 //历史棋盘数据(真实)
 int Board_History_Real[8][SIZE][SIZE];
@@ -249,66 +249,47 @@ void write_chessboard_data(int D_type) {
 //数据转录
 void data_trans(int B_type,int D_type) {
     if (D_type == REAL) {
-        NN_input.type = B_type;
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                NN_input.X1[i][j] = Board_History_Real[0][i][j] == B_type ? 1 : 0;
-                NN_input.X2[i][j] = Board_History_Real[1][i][j] == B_type ? 1 : 0;
-                NN_input.X3[i][j] = Board_History_Real[2][i][j] == B_type ? 1 : 0;
-                NN_input.X4[i][j] = Board_History_Real[3][i][j] == B_type ? 1 : 0;
-                NN_input.X5[i][j] = Board_History_Real[4][i][j] == B_type ? 1 : 0;
-                NN_input.X6[i][j] = Board_History_Real[5][i][j] == B_type ? 1 : 0;
-                NN_input.X7[i][j] = Board_History_Real[6][i][j] == B_type ? 1 : 0;
-                NN_input.X8[i][j] = Board_History_Real[7][i][j] == B_type ? 1 : 0;
-                NN_input.Y1[i][j] = Board_History_Real[0][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y2[i][j] = Board_History_Real[1][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y3[i][j] = Board_History_Real[2][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y4[i][j] = Board_History_Real[3][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y5[i][j] = Board_History_Real[4][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y6[i][j] = Board_History_Real[5][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y7[i][j] = Board_History_Real[6][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y8[i][j] = Board_History_Real[7][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[0][i][j] = Board_History_Real[0][i][j] == B_type ? 1 : 0;
+                NN_input[2][i][j] = Board_History_Real[1][i][j] == B_type ? 1 : 0;
+                NN_input[4][i][j] = Board_History_Real[2][i][j] == B_type ? 1 : 0;
+                NN_input[6][i][j] = Board_History_Real[3][i][j] == B_type ? 1 : 0;
+                NN_input[8][i][j] = Board_History_Real[4][i][j] == B_type ? 1 : 0;
+                NN_input[10][i][j] = Board_History_Real[5][i][j] == B_type ? 1 : 0;
+                NN_input[12][i][j] = Board_History_Real[6][i][j] == B_type ? 1 : 0;
+                NN_input[14][i][j] = Board_History_Real[7][i][j] == B_type ? 1 : 0;
+                NN_input[1][i][j] = Board_History_Real[0][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[3][i][j] = Board_History_Real[1][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[5][i][j] = Board_History_Real[2][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[7][i][j] = Board_History_Real[3][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[9][i][j] = Board_History_Real[4][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[11][i][j] = Board_History_Real[5][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[13][i][j] = Board_History_Real[6][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[15][i][j] = Board_History_Real[7][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[16][i][j] = B_type;
             }
         }
     } else {
-        NN_input.type = B_type;
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                NN_input.X1[i][j] = Board_History_Virtual[0][i][j] == B_type ? 1 : 0;
-                NN_input.X2[i][j] = Board_History_Virtual[1][i][j] == B_type ? 1 : 0;
-                NN_input.X3[i][j] = Board_History_Virtual[2][i][j] == B_type ? 1 : 0;
-                NN_input.X4[i][j] = Board_History_Virtual[3][i][j] == B_type ? 1 : 0;
-                NN_input.X5[i][j] = Board_History_Virtual[4][i][j] == B_type ? 1 : 0;
-                NN_input.X6[i][j] = Board_History_Virtual[5][i][j] == B_type ? 1 : 0;
-                NN_input.X7[i][j] = Board_History_Virtual[6][i][j] == B_type ? 1 : 0;
-                NN_input.X8[i][j] = Board_History_Virtual[7][i][j] == B_type ? 1 : 0;
-                NN_input.Y1[i][j] = Board_History_Virtual[0][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y2[i][j] = Board_History_Virtual[1][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y3[i][j] = Board_History_Virtual[2][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y4[i][j] = Board_History_Virtual[3][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y5[i][j] = Board_History_Virtual[4][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y6[i][j] = Board_History_Virtual[5][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y7[i][j] = Board_History_Virtual[6][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y8[i][j] = Board_History_Virtual[7][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-            }
-        }        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                NN_input.X1[i][j] = Board_History_Virtual[0][i][j] == B_type ? 1 : 0;
-                NN_input.X2[i][j] = Board_History_Virtual[1][i][j] == B_type ? 1 : 0;
-                NN_input.X3[i][j] = Board_History_Virtual[2][i][j] == B_type ? 1 : 0;
-                NN_input.X4[i][j] = Board_History_Virtual[3][i][j] == B_type ? 1 : 0;
-                NN_input.X5[i][j] = Board_History_Virtual[4][i][j] == B_type ? 1 : 0;
-                NN_input.X6[i][j] = Board_History_Virtual[5][i][j] == B_type ? 1 : 0;
-                NN_input.X7[i][j] = Board_History_Virtual[6][i][j] == B_type ? 1 : 0;
-                NN_input.X8[i][j] = Board_History_Virtual[7][i][j] == B_type ? 1 : 0;
-                NN_input.Y1[i][j] = Board_History_Virtual[0][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y2[i][j] = Board_History_Virtual[1][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y3[i][j] = Board_History_Virtual[2][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y4[i][j] = Board_History_Virtual[3][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y5[i][j] = Board_History_Virtual[4][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y6[i][j] = Board_History_Virtual[5][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y7[i][j] = Board_History_Virtual[6][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
-                NN_input.Y8[i][j] = Board_History_Virtual[7][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[0][i][j] = Board_History_Virtual[0][i][j] == B_type ? 1 : 0;
+                NN_input[2][i][j] = Board_History_Virtual[1][i][j] == B_type ? 1 : 0;
+                NN_input[4][i][j] = Board_History_Virtual[2][i][j] == B_type ? 1 : 0;
+                NN_input[6][i][j] = Board_History_Virtual[3][i][j] == B_type ? 1 : 0;
+                NN_input[8][i][j] = Board_History_Virtual[4][i][j] == B_type ? 1 : 0;
+                NN_input[10][i][j] = Board_History_Virtual[5][i][j] == B_type ? 1 : 0;
+                NN_input[12][i][j] = Board_History_Virtual[6][i][j] == B_type ? 1 : 0;
+                NN_input[14][i][j] = Board_History_Virtual[7][i][j] == B_type ? 1 : 0;
+                NN_input[1][i][j] = Board_History_Virtual[0][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[3][i][j] = Board_History_Virtual[1][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[5][i][j] = Board_History_Virtual[2][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[7][i][j] = Board_History_Virtual[3][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[9][i][j] = Board_History_Virtual[4][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[11][i][j] = Board_History_Virtual[5][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[13][i][j] = Board_History_Virtual[6][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[15][i][j] = Board_History_Virtual[7][i][j] == (B_type == B_BLACK ? B_WHITE : B_BLACK) ? 1 : 0;
+                NN_input[16][i][j] = B_type;
             }
         }
     }

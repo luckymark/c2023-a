@@ -61,13 +61,10 @@ void back_value();
 // UCT算法搜索
 void UCT();
 
-// 神经网络接口
-void NeutralNetwork();
-
 // 展开节点
 void expand();
 
 // 评估和回传
-void EstimateAndBack();
+void EstimateAndBack(char* model_name,char* opt_name);
 
 #endif //C2023_CHALLENGE_MCTS_H

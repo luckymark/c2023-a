@@ -2,8 +2,11 @@
 #ifndef GOBANG_BOARD_H
 #define GOBANG_BOARD_H
 
+#include <stdlib.h>
+#include <math.h>
+
 //宏定义区
-#define childrenNum 150 // 每个节点的最大子节点数
+#define childrenNum 225 // 每个节点的最大子节点数
 
 // MCTS算法相关参数
 #define C_UCT 1 // UCT中的参数C
@@ -47,29 +50,6 @@ typedef struct node {
     struct node* children[childrenNum];
 } Node;
 
-//历史棋盘数据
-typedef struct history_chessboard_data {
-    //X代表当前棋手的历史落子，Y代表对方棋手的历史落子
-    int X1[SIZE][SIZE];
-    int Y1[SIZE][SIZE];
-    int X2[SIZE][SIZE];
-    int Y2[SIZE][SIZE];
-    int X3[SIZE][SIZE];
-    int Y3[SIZE][SIZE];
-    int X4[SIZE][SIZE];
-    int Y4[SIZE][SIZE];
-    int X5[SIZE][SIZE];
-    int Y5[SIZE][SIZE];
-    int X6[SIZE][SIZE];
-    int Y6[SIZE][SIZE];
-    int X7[SIZE][SIZE];
-    int Y7[SIZE][SIZE];
-    int X8[SIZE][SIZE];
-    int Y8[SIZE][SIZE];
-    //当前落子人
-    int type;
-} HCD;
-
 //全局变量区
 //当前实际棋盘
 extern int board_real[SIZE][SIZE];
@@ -87,7 +67,7 @@ extern int end_x;
 extern int end_y;
 
 //神经网络输入
-extern HCD NN_input;
+extern int NN_input[17][SIZE][SIZE];
 
 //历史棋盘数据(实际)
 extern int Board_History_Real[8][SIZE][SIZE];

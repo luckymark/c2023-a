@@ -7,9 +7,6 @@
  * 以上两个函数类似于"."运算符
  * 使用其它函数对当前对象进行操作
  */
-
-#include <stdlib.h>
-#include <math.h>
 #include "MCTS.h"
 
 //当前访问节点
@@ -20,6 +17,15 @@ double value[SIZE][SIZE];
 
 //策略分布
 double policy[SIZE][SIZE];
+
+//测试函数
+void test_func(int D_type) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+
+        }
+    }
+}
 
 //无用の蜜汁小函数（返回当前根节点所有子节点的搜索次数综合）
 double sum_N() {
@@ -216,11 +222,6 @@ void UCT() {
     chooseNode();
 }
 
-//神经网络接口（待实现）
-void NeutralNetwork() {
-
-}
-
 //展开
 void expand() {
     for (int i = 0; i < SIZE; ++i) {
@@ -233,7 +234,7 @@ void expand() {
 }
 
 //评估与回传
-void EstimateAndBack() {
+void EstimateAndBack(char* model_name, char* opt_name) {
     data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),REAL);
     /*
      * 此处应根据当前实际棋盘状态进行一次神经网络评估
@@ -293,22 +294,20 @@ void EstimateAndBack() {
     }
     //评估结束，返回根节点
     back_to_root();
-    //生成先验落子概率与先验价值向量、落子概率与价值向量
-    int count = 0;
-    for (int i = 0; i < childrenNum; ++i) {
-        if (target->children[i] != NULL) {
-            count++;
+    //生成落子概率与价值矩阵
+    double P_mcts[SIZE][SIZE];
+    double V_mcts[SIZE][SIZE];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            P_mcts[i][j] = 0;
+            V_mcts[i][j] = 0;
         }
     }
-    double* P_CNN = (double*) malloc(count* sizeof(double ));
-    double* P_MCTS = (double*) malloc(count* sizeof(double ));
-    double* V_CNN = (double*) malloc(count*sizeof(double ));
-    double* V_MCTS = (double*) malloc(count*sizeof(double ));
-    for (int i = 0; i < count; ++i) {
-        P_CNN[i] = target->children[i]->P;
-        V_CNN[i] = target->children[i]->v;
-        P_MCTS[i] = ((double)target->children[i]->N)/sum_N();
-        V_MCTS[i] = target->children[i]->Q;
+    for (int i = 0; i < childrenNum; ++i) {
+        if (target->children[i] != NULL) {
+            P_mcts[target->children[i]->Y][target->children[i]->X] = target->children[i]->N / sum_N();
+            V_mcts[target->children[i]->Y][target->children[i]->X] = target->children[i]->Q;
+        }
     }
     /*
     * 更新神经网络参数
