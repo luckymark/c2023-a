@@ -3,6 +3,9 @@
 
 #include <torch/torch.h>
 #include <tuple>
+extern "C" {
+#include "board.h"
+}
 
 // 声明 unflatten 函数
 torch::Tensor unflatten(torch::Tensor input, int64_t height, int64_t width);

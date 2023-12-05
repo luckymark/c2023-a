@@ -1,11 +1,11 @@
 #include "CNN.h"
 #include <iostream>
 #include <torch/optim.h>
+#include <torch/serialize.h>
 
 int main() {
     // 创建一个简单的输入张量
     auto input = torch::randn({1, 17, 15, 15}); // 假设输入是一个随机张量
-
     // 实例化神经网络
     GobangCNN gobangCNN;
 
@@ -21,6 +21,26 @@ int main() {
 
     // 第一次前向传播
     auto [v1, p1] = gobangCNN.forward(input);
+    double c_array[15][15];
+
+    // 确保张量在 CPU 上并且是 double 类型
+    v1 = v1.to(torch::kDouble);
+
+    // 将张量的内容复制到数组中
+    for (int i = 0; i < 15; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            c_array[i][j] = v1[0][i][j].item<double>();
+        }
+    }
+
+    // 打印数组来验证
+    for (int i = 0; i < 15; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            std::cout << c_array[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
     auto loss1 = lossFunc.forward(gobangCNN, p1, v1, target_p, target_v);
     std::cout << "Initial Loss: " << loss1.item<float>() << std::endl;
 
