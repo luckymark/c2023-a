@@ -11,7 +11,7 @@
 // MCTS算法相关参数
 #define C_UCT 1 // UCT中的参数C
 #define E_times 400 // 每一步的评估次数
-#define MCTS_times 400 // 每次评估的蒙特卡洛模拟次数
+#define MCTS_times 225 // 每次评估的蒙特卡洛模拟次数
 
 #define SIZE 15 // 棋盘大小
 
@@ -80,13 +80,10 @@ extern int Board_History_Virtual[8][SIZE][SIZE];
 void resetBoard(int type);
 
 //判断输赢
-void game_terminate(int type);
+int game_terminate(int type);
 
 // 初始化历史棋盘数据
 void reset_HCD(int type);
-
-// 记录历史棋盘数据
-void write_chessboard_data(int D_type);
 
 //数据转录
 void data_trans(int B_type,int D_type);

@@ -1,11 +1,5 @@
 /*
- * 蒙特卡洛树搜索代码
- * 代码运行逻辑仿照Java语言的面向对象编程逻辑
- * 每个node结构体视为一个对象
- * 使用setTarget(Node* input)函数设定当前程序访问的节点
- * 使用outputTarget()以在其它文件中访问target向量
- * 以上两个函数类似于"."运算符
- * 使用其它函数对当前对象进行操作
+ * 蒙特卡洛树搜索
  */
 #include "MCTS.h"
 
@@ -18,16 +12,61 @@ double value[SIZE][SIZE];
 //策略分布
 double policy[SIZE][SIZE];
 
-//测试函数
-void test_func(int D_type) {
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
+//数据转换：int -> tensor(KFloat32)
+torch::Tensor convertBoardDataToTensor(int array[17][15][15]) {
+    // 创建一个空的 Tensor，大小为 1x17x15x15
+    torch::Tensor tensor = torch::empty({1, 17, 15, 15}, torch::kFloat32);
 
+    // 填充 Tensor
+    for (int i = 0; i < 17; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            for (int k = 0; k < 15; ++k) {
+                // 显式转换 int 为 float
+                tensor[0][i][j][k] = static_cast<float>(array[i][j][k]);
+            }
+        }
+    }
+
+    return tensor;
+}
+
+//数据转换：double -> tensor(KFloat32)
+torch::Tensor convertMCTSResultToTensor(double array[15][15]) {
+    // 创建一个空的 Tensor，大小为 1x15x15
+    torch::Tensor tensor = torch::empty({1, 15, 15}, torch::kFloat32);
+
+    // 填充 Tensor
+    for (int i = 0; i < 15; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            // 显式转换 double 为 float
+            tensor[0][i][j] = static_cast<float>(array[i][j]);
+        }
+    }
+
+    return tensor;
+}
+
+//数据转换：tensor -> double（策略）
+void trans_policy(torch::Tensor input) {
+    input = input.to(torch::kDouble);
+    for (int i = 0; i < 15; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            policy[i][j] = input[0][i][j].item<double>();
         }
     }
 }
 
-//无用の蜜汁小函数（返回当前根节点所有子节点的搜索次数综合）
+//数据转换：tensor -> double（价值）
+void trans_value(torch::Tensor input) {
+    input = input.to(torch::kDouble);
+    for (int i = 0; i < 15; ++i) {
+        for (int j = 0; j < 15; ++j) {
+            value[i][j] = input[0][i][j].item<double>();
+        }
+    }
+}
+
+//无用の蜜汁小函数（返回当前根节点所有子节点的搜索次数总和）
 double sum_N() {
     double sum = 0;
     for (int i = 0; i < childrenNum; ++i) {
@@ -36,11 +75,6 @@ double sum_N() {
         }
     }
     return sum;
-}
-
-//设定访问节点
-void setTarget(Node* input) {
-    target = input;
 }
 
 //创建根节点
@@ -124,16 +158,6 @@ void createNode(int x,int y,double Q,double v,int N,double P,double P_real,int t
             break;
         }
     }
-}
-
-//判断当前节点是否是叶节点
-int is_leaf() {
-    for (int i = 0; i < childrenNum; ++i) {
-        if (target->children[i] != NULL) {
-            return 0;
-        }
-    }
-    return 1;
 }
 
 //根据UCT算法选择节点
@@ -234,14 +258,28 @@ void expand() {
 }
 
 //评估与回传
-void EstimateAndBack(char* model_name, char* opt_name) {
+void EstimateAndBack(std::string model_name,std::string model_save_name) {
+    //初始化神经网络
+    GobangCNN gobangCNN;
+    ValuePolicyLoss lossFunc;
+    if (!model_name.empty()) {
+        torch::serialize::InputArchive input_archive;
+        input_archive.load_from(model_name);
+        gobangCNN.load(input_archive);
+    }
+    torch::optim::Adam optimizer(gobangCNN.parameters(), torch::optim::AdamOptions(1e-4));
     data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),REAL);
-    /*
-     * 此处应根据当前实际棋盘状态进行一次神经网络评估
-     */
+    auto input = convertBoardDataToTensor(NN_input);
+    //第一次神经网络评估，此时应保存第一次的结果供后续损失函数使用
+    auto [v, p] = gobangCNN.forward(input);
+    auto orin_v = v;
+    auto orin_p = p;
+    trans_policy(v);
+    trans_value(p);
     //第一次展开，生成所有可能的move;
     expand();
     for (int i = 0; i < E_times; ++i) {
+        printf("%d\n",i);
         //重置虚拟棋盘与虚拟历史落子数据
         resetBoard(VIRTUAL);
         reset_HCD(VIRTUAL);
@@ -257,9 +295,11 @@ void EstimateAndBack(char* model_name, char* opt_name) {
         data_trans((target->type == B_BLACK ? B_WHITE : B_BLACK),VIRTUAL);
         //开始评估
         for (int j = 0; j < MCTS_times; ++j) {
-            /*
-             * 神经网络评估
-             */
+            //神经网络评估
+            auto input1 = convertBoardDataToTensor(NN_input);
+            auto [v1, p1] = gobangCNN.forward(input1);
+            trans_value(v1);
+            trans_policy(p1);
             //拓展
             expand();
             //选择
@@ -309,7 +349,14 @@ void EstimateAndBack(char* model_name, char* opt_name) {
             V_mcts[target->children[i]->Y][target->children[i]->X] = target->children[i]->Q;
         }
     }
-    /*
-    * 更新神经网络参数
-    */
+    //反向传播更新神经网络
+    auto p_mcts = convertMCTSResultToTensor(P_mcts);
+    auto v_mcts = convertMCTSResultToTensor(V_mcts);
+    auto loss = lossFunc.forward(gobangCNN,orin_p,orin_v, p_mcts, v_mcts);
+    optimizer.zero_grad();  // 清除之前的梯度
+    loss.backward();
+    optimizer.step();
+    torch::serialize::OutputArchive output_archive;
+    gobangCNN.save(output_archive);
+    output_archive.save_to(model_save_name);
 }

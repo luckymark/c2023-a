@@ -1,3 +1,4 @@
+add_definitions(-DNOMINMAX)
 project(gobang)
 
 # 设置 C++17 标准
@@ -23,6 +24,6 @@ link_directories(${EasyX_LINK})
 link_libraries(EasyXa)
 link_libraries(EasyXw)
 
-add_executable(gobang main.cpp board_paint.cpp board_paint.h MCTS.c MCTS.h board.c board.h CNN.cpp CNN.h GobangCNN.cpp ValuePolicyLoss.cpp)
+add_executable(gobang main.cpp board_paint.cpp board_paint.h MCTS.cpp MCTS.h board.c board.h CNN.cpp CNN.h GobangCNN.cpp ValuePolicyLoss.cpp)
 
 target_link_libraries(gobang torch torch_cpu torch_cuda c10 c10_cuda)

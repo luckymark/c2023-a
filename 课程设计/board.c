@@ -45,7 +45,7 @@ void resetBoard(int type) {
 }
 
 //判断输赢
-void game_terminate(int type) {
+int game_terminate(int type) {
     win = 0;
     if (type == REAL) {
         start_x = 0;
@@ -192,6 +192,7 @@ void game_terminate(int type) {
             }
         }
     }
+    return win;
 }
 
 //初始化历史棋盘数据

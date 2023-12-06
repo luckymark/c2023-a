@@ -49,7 +49,7 @@ std::tuple<torch::Tensor, torch::Tensor> GobangCNN::forward(torch::Tensor x) {
 
     v = unflatten(v, 15, 15);
     p = unflatten(p, 15, 15);
-/*
+
     // 遍历并更新 v 和 p Tensor 的值
     for (int i = 0; i < 15; ++i) {
         for (int j = 0; j < 15; ++j) {
@@ -63,6 +63,5 @@ std::tuple<torch::Tensor, torch::Tensor> GobangCNN::forward(torch::Tensor x) {
             }
         }
     }
-*/
     return std::make_tuple(v, p);
 }

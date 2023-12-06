@@ -3,6 +3,7 @@
 
 #include <torch/torch.h>
 #include <tuple>
+#include <torch/serialize.h>
 extern "C" {
 #include "board.h"
 }
@@ -27,5 +28,7 @@ struct ValuePolicyLoss : torch::nn::Module {
 private:
     float lambda_reg;
 };
+
+void createNewModel(std::string model_name);
 
 #endif //GOBANG_CNN_H
