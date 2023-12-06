@@ -71,7 +71,7 @@ double sum_N() {
     double sum = 0;
     for (int i = 0; i < childrenNum; ++i) {
         if (target->children[i] != NULL) {
-            sum = (double) target->children[i]->N;
+            sum += (double) target->children[i]->N;
         }
     }
     return sum;
@@ -272,8 +272,8 @@ void EstimateAndBack(std::string model_name,std::string model_save_name) {
     auto input = convertBoardDataToTensor(NN_input);
     //第一次神经网络评估，此时应保存第一次的结果供后续损失函数使用
     auto [v, p] = gobangCNN.forward(input);
-    auto orin_v = v;
-    auto orin_p = p;
+    auto orin_v = v.detach();
+    auto orin_p = p.detach();
     trans_policy(v);
     trans_value(p);
     //第一次展开，生成所有可能的move;
@@ -345,13 +345,20 @@ void EstimateAndBack(std::string model_name,std::string model_save_name) {
     }
     for (int i = 0; i < childrenNum; ++i) {
         if (target->children[i] != NULL) {
-            P_mcts[target->children[i]->Y][target->children[i]->X] = target->children[i]->N / sum_N();
+            P_mcts[target->children[i]->Y][target->children[i]->X] = ((double)target->children[i]->N) / sum_N();
             V_mcts[target->children[i]->Y][target->children[i]->X] = target->children[i]->Q;
         }
     }
     //反向传播更新神经网络
     auto p_mcts = convertMCTSResultToTensor(P_mcts);
     auto v_mcts = convertMCTSResultToTensor(V_mcts);
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if (orin_p[0][i][j].item<float>() == 0) {
+                orin_p[0][i][j] = 1;
+            }
+        }
+    }
     auto loss = lossFunc.forward(gobangCNN,orin_p,orin_v, p_mcts, v_mcts);
     optimizer.zero_grad();  // 清除之前的梯度
     loss.backward();
