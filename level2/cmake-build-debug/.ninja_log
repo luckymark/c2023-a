@@ -1,0 +1,15 @@
+# ninja log v5
+3	206	7169128507137950	CMakeFiles/GA.dir/GA/main.c.obj	4ebc7d6637204d17
+2	50	7163226184911682	CMakeFiles/PI.dir/PI/main.c.obj	daa4f01c41a48117
+303	381	7163231302035397	PI.exe	5073b6d89a5b265d
+1	303	7163231301303481	CMakeFiles/PI.dir/PI/main.cpp.obj	ce06b11d8053a408
+206	367	7169128508732137	GA.exe	591caf4e2e4b5631
+3	87	7174180358345034	CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj	382395d6be8e21d5
+87	206	7174180359518295	NeuralNetworks.exe	7673d3addf2abb3c
+3	150	7175644933811941	CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj	382395d6be8e21d5
+7	151	7175644933811941	CMakeFiles/NeuralNetworks.dir/NeuralNetworks/extract_methods.c.obj	910c250eeea7cd03
+151	317	7175644935456204	NeuralNetworks.exe	b4844bc55e282e91
+4	100	7175645591223313	CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj	382395d6be8e21d5
+101	228	7175645592486359	NeuralNetworks.exe	b4844bc55e282e91
+6	116	7175647498271349	CMakeFiles/NeuralNetworks.dir/NeuralNetworks/main.c.obj	382395d6be8e21d5
+116	270	7175647499795335	NeuralNetworks.exe	b4844bc55e282e91

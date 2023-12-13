@@ -1,0 +1,5 @@
+# ninja log v5
+1	84	7174341161994398	CMakeFiles/p02_is_prime.dir/p02_is_prime/prime.c.obj	33a1a9f503151f0d
+4	104	7174341162184898	CMakeFiles/p02_is_prime.dir/p02_is_prime/main.c.obj	c7c652460941592a
+2	73	7174343747510421	CMakeFiles/p02_is_prime.dir/p02_is_prime/main.c.obj	c7c652460941592a
+74	208	7174343748840256	p02_is_prime.exe	7b6712e66d8edde
