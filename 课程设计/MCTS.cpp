@@ -134,6 +134,7 @@ void inheritRoot() {
     }
     free(target->father);
     target->father = NULL;
+    target->N = 0;
     chess(target->X,target->Y,target->type,REAL);
 }
 
