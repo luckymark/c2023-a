@@ -8,10 +8,3 @@ torch::Tensor unflatten(torch::Tensor input, int64_t height, int64_t width) {
     // 使用 view 方法重新塑形 Tensor
     return input.view({batch_size, height, width});
 }
-
-void createNewModel(std::string model_name) {
-    GobangCNN model;
-    torch::serialize::OutputArchive output;
-    model.save(output);
-    output.save_to(model_name);
-}

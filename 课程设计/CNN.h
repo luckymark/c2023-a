@@ -29,6 +29,4 @@ private:
     float lambda_reg;
 };
 
-void createNewModel(std::string model_name);
-
 #endif //GOBANG_CNN_H
