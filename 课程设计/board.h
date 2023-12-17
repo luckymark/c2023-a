@@ -10,7 +10,7 @@
 
 // MCTS算法相关参数
 #define C_UCT 1 // UCT中的参数C
-#define E_times 5 // 每一步的评估次数
+#define E_times 700 // 每一步的评估次数
 #define MCTS_times 225 // 每次评估的蒙特卡洛模拟次数
 
 #define SIZE 15 // 棋盘大小

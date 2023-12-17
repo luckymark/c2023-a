@@ -12,6 +12,58 @@ double value[SIZE][SIZE];
 //策略分布
 double policy[SIZE][SIZE];
 
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+//显示进度条
+void showProgressBar(int inter_times, int inter_times_total, std::string model_name, int i, int es_times, int chessPieceType) {
+// 清空屏幕
+    clearScreen();
+
+// 计算进度百分比
+    int percentage = (i * 1000) / es_times;
+
+// 显示进度条
+    std::cout << "Gobang AI Based on MCTS and Policy-Value Network by Mgepahmge" << std::endl;
+    std::cout << "Mode: Training" << std::endl;
+// 检查CUDA是否可用
+    if (torch::cuda::is_available()) {
+        // 如果CUDA可用，则使用CUDA设备
+        torch::Device device(torch::kCUDA);
+        std::cout << "CUDA is available! Using CUDA device: " << device << std::endl;
+    } else {
+        std::cout << "CUDA is not available! Using CPU device" << std::endl;
+    }
+
+    std::cout << "Interation: " << inter_times << "/" << inter_times_total << std::endl;
+    std::cout << "Model: " << "[" << model_name << "] Estimate Progress:\n";
+    std::cout << "<";
+    for (int j = 0; j < 100; ++j) {
+        if (j < percentage/10) {
+            std::cout << "=";
+        } else {
+            std::cout << " ";
+        }
+    }
+    std::cout << "| " << (double)percentage/10 << "%> [" << i << "/" << es_times << "]" << std::endl;
+
+// 显示棋子类型
+    std::string chessPiece;
+    if (chessPieceType == 1) {
+        chessPiece = "Black";
+    } else if (chessPieceType == 2) {
+        chessPiece = "White";
+    } else {
+        chessPiece = "Unknown";
+    }
+    std::cout << "Chess piece type: " << chessPiece << std::endl;
+}
+
 //数据转换：int -> tensor(KFloat32)
 torch::Tensor convertBoardDataToTensor(int array[17][15][15]) {
     // 创建一个空的 Tensor，大小为 1x17x15x15
@@ -26,7 +78,6 @@ torch::Tensor convertBoardDataToTensor(int array[17][15][15]) {
             }
         }
     }
-
     return tensor;
 }
 
@@ -259,7 +310,7 @@ void expand() {
 }
 
 //评估与回传
-void EstimateAndBack(std::string model_name,std::string model_save_name) {
+void EstimateAndBack(int inter_times,int inter_times_total,std::string model_name,std::string model_save_name) {
     //初始化神经网络
     GobangCNN gobangCNN;
     ValuePolicyLoss lossFunc;
@@ -280,7 +331,7 @@ void EstimateAndBack(std::string model_name,std::string model_save_name) {
     //第一次展开，生成所有可能的move;
     expand();
     for (int i = 0; i < E_times; ++i) {
-        printf("%d\n",i);
+        showProgressBar(inter_times,inter_times_total,model_name,i+1,E_times,root()->type==B_BLACK?B_WHITE:B_BLACK);
         //重置虚拟棋盘与虚拟历史落子数据
         resetBoard(VIRTUAL);
         reset_HCD(VIRTUAL);

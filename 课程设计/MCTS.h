@@ -27,6 +27,6 @@ void creatRoot(int x, int y, int type);
 void inheritRoot();
 
 // 评估和回传
-void EstimateAndBack(std::string model_name = "",std::string model_save_name = "");
+void EstimateAndBack(int inter_times,int inter_times_total,std::string model_name = "",std::string model_save_name = "");
 
 #endif //C2023_CHALLENGE_MCTS_H

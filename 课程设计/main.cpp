@@ -27,12 +27,12 @@ int main() {
             drawBoard();
             while (game_terminate(REAL) == 0) {
                 if (now == 1) {
-                    EstimateAndBack("model1.pth","model1.pth");
+                    EstimateAndBack(k+1,train_times,"model1.pth","model1.pth");
                     inheritRoot();
                     drawBoard();
                     now = 2;
                 } else if (now == 2) {
-                    EstimateAndBack("model2.pth","model2.pth");
+                    EstimateAndBack(k+1,train_times,"model2.pth","model2.pth");
                     inheritRoot();
                     drawBoard();
                     now = 1;
