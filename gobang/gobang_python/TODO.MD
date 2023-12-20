@@ -1,0 +1,9 @@
+- [ ] 代码审计
+- [ ] ai.py
+- [x] board.py (已修改)
+- [x] comparer.py
+- [ ] config.py
+- [x] evaluate_point.py
+- [x] negamax.py
+- [x] static.py
+- [x] zobrist.py

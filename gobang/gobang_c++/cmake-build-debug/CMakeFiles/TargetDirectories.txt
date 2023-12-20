@@ -1,0 +1,9 @@
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/gobang.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/list_install_components.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/install.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/install/local.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/install/strip.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/gobang_autogen_timestamp_deps.dir
+D:/YCM/C++/Qt6/gobang/cmake-build-debug/CMakeFiles/gobang_autogen.dir

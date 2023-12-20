@@ -173,5 +173,9 @@ void destroy_map(char** map){
 }
 
 
-void write_score(char* filename, NameScore*);
-NameScore* read_score(char* filename, unsigned length);
+void write_score(char* filename, NameScore* name) {
+    ;
+}
+NameScore* read_score(char* filename, unsigned length) {
+    ;
+}
