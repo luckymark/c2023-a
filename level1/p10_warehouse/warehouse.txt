@@ -1,0 +1,9 @@
+drinks:    C'estbon  Coca Cola  Pepsi  Assam milk tea
+num:       01        02         03     04
+price:     2.00      3.50       3.50   4.00
+inventory: #126      #213       #584   #332
+
+drinks:    AD calcium  pure milk  you-suan-ru  Iced tea
+num:       05          06         07           08
+price:     2.50        4.50       2.50         3.00
+inventory: #265        #193       #441         #501
