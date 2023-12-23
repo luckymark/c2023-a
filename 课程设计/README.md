@@ -33,5 +33,6 @@
 
 ``-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake``
 
+或者直接在课程设计/gui.exe/ 中找到gui.exe运行
 - 默认编译为Release模式
 - 感谢指导，完美结课
