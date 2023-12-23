@@ -1,0 +1,12 @@
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p01_running_letter.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p02_is_prime.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p03_all_primes.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p04_goldbach.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p05_encrypt_decrypt.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p06_hanoi.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p07_maze.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p08_push_boxes.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p09_linked_list.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/p10_warehouse.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/l/CLionProjects/c2023-a/level1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
