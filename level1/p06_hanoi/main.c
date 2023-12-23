@@ -15,7 +15,10 @@ int main(){
 
 //a:base b:temporary c:target
 void hanoi(int layer,char a,char b,char c){
-    if (layer == 0) return;
+    if (layer == 1) {
+        printf("%c -> %c\n",a,c);
+        return;
+    }
     hanoi(layer - 1,a,c,b);//将base柱本层以上所有层，移到temporary柱暂存。
     printf("%c -> %c\n",a,c);//将base柱本层，移到target柱。
     hanoi(layer - 1,b,a,c);//将所有在temporary柱的暂存层，移到target柱。
