@@ -1,0 +1,210 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.2"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						13
+					]
+				},
+				{
+					"build" : "level1",
+					"jsonFile" : "directory-level1-Debug-d15955a4e348d3b43342.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.2"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "level1",
+					"targetIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "c2023_challenge",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "level1",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "BigNum::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-BigNum-Debug-cb66565fe3b96aabaff9.json",
+					"name" : "BigNum",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "caculater::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-caculater-Debug-fe71db78e71d48d389ba.json",
+					"name" : "caculater",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "new_target::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-new_target-Debug-dd422f857fc0c17db291.json",
+					"name" : "new_target",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p01_running_letter::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p01_running_letter-Debug-ff4448faad0d3cb20213.json",
+					"name" : "p01_running_letter",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p02_is_prime::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p02_is_prime-Debug-0233ff5a895739ff6ce3.json",
+					"name" : "p02_is_prime",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p03_all_primes::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p03_all_primes-Debug-38e7a7eb8e1c91515a31.json",
+					"name" : "p03_all_primes",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p04_goldbach::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p04_goldbach-Debug-1523384274ea7c5714e9.json",
+					"name" : "p04_goldbach",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p05_encrypt_decrypt::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p05_encrypt_decrypt-Debug-3970dac689d258dc1494.json",
+					"name" : "p05_encrypt_decrypt",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p06_hanoi::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p06_hanoi-Debug-46ec3e9d3a71ab452baf.json",
+					"name" : "p06_hanoi",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p07_maze::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p07_maze-Debug-1e190b17950c31bf2441.json",
+					"name" : "p07_maze",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p08_push_boxes::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p08_push_boxes-Debug-d4221a27418784a93705.json",
+					"name" : "p08_push_boxes",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p09_linked_list::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p09_linked_list-Debug-a96f6a813604e14a73d4.json",
+					"name" : "p09_linked_list",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "p10_warehouse::@b906db641b4cde6fb11a",
+					"jsonFile" : "target-p10_warehouse-Debug-56718a184930c5f9be97.json",
+					"name" : "p10_warehouse",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "queue::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-queue-Debug-b6a54a80ac52ad78eb6a.json",
+					"name" : "queue",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/YCM/C++/uestc/c2023-a/cmake-build-debug",
+		"source" : "D:/YCM/C++/uestc/c2023-a"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}
