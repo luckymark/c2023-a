@@ -10,6 +10,6 @@ raylib provides CMake targets:
   target_link_libraries(main PRIVATE raylib)
 
 -- Running vcpkg install - done
--- Configuring done (3.5s)
+-- Configuring done (4.3s)
 -- Generating done (0.0s)
 -- Build files have been written to: D:/CLionProjects/untitled1/cmake-build-debug

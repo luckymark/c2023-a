@@ -1,16 +1,10 @@
 # ninja log v5
-11	707	7251985444463890	CMakeFiles/untitled1.dir/draw.cpp.obj	4bb679c9131aa07b
-5	82	7251992852326033	CMakeFiles/untitled1.dir/main.cpp.obj	4968426c6050c40
-8	575	7251985443143455	CMakeFiles/untitled1.dir/test.cpp.obj	55523ce1e6e41e03
-8	77	7251970965349163	CMakeFiles/untitled1.dir/init.cpp.obj	1f7a35b00d887095
-641	1843	7251979828595474	untitled1.exe	26eef9934ddb396f
-1	3502	7251995993180747	build.ninja	cb1de087518ef3a
-5	1378	7251309808530658	CMakeFiles/untitled1.dir/GameTree.cpp.obj	bcc50489c46612e1
-4	556	7251985442953409	CMakeFiles/untitled1.dir/play.cpp.obj	e30ac1c4194ed2d7
-14	71	7251985438112319	CMakeFiles/untitled1.dir/basic.cpp.obj	6d4a06eee82e30c7
+4	635	7251996603237766	CMakeFiles/untitled1.dir/draw.cpp.obj	4bb679c9131aa07b
 8	88	7251995996115460	CMakeFiles/untitled1.dir/main.cpp.obj	4968426c6050c40
 11	593	7251996001158365	CMakeFiles/untitled1.dir/test.cpp.obj	55523ce1e6e41e03
-15	715	7251996002388636	CMakeFiles/untitled1.dir/draw.cpp.obj	4bb679c9131aa07b
-3	516	7251996260447313	CMakeFiles/untitled1.dir/play.cpp.obj	e30ac1c4194ed2d7
-4	635	7251996603237766	CMakeFiles/untitled1.dir/draw.cpp.obj	4bb679c9131aa07b
+8	77	7251970965349163	CMakeFiles/untitled1.dir/init.cpp.obj	1f7a35b00d887095
 636	1850	7251996604794161	untitled1.exe	26eef9934ddb396f
+1	3502	7252813393139883	build.ninja	cb1de087518ef3a
+5	1378	7251309808530658	CMakeFiles/untitled1.dir/GameTree.cpp.obj	bcc50489c46612e1
+3	516	7251996260447313	CMakeFiles/untitled1.dir/play.cpp.obj	e30ac1c4194ed2d7
+14	71	7251985438112319	CMakeFiles/untitled1.dir/basic.cpp.obj	6d4a06eee82e30c7
