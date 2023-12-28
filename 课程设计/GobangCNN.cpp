@@ -4,19 +4,19 @@
 GobangCNN::GobangCNN() {
     // 定义和初始化网络层
     publicConv = torch::nn::Sequential(
-            torch::nn::Conv2d(torch::nn::Conv2dOptions(17, 32, /*kernel_size=*/3).padding(1)),
+            torch::nn::Conv2d(torch::nn::Conv2dOptions(17, 32, 3).padding(1)),
             torch::nn::BatchNorm2d(32),
             torch::nn::ReLU(),
-            torch::nn::Conv2d(torch::nn::Conv2dOptions(32, 64, /*kernel_size=*/3).padding(1)),
+            torch::nn::Conv2d(torch::nn::Conv2dOptions(32, 64, 3).padding(1)),
             torch::nn::BatchNorm2d(64),
             torch::nn::ReLU(),
-            torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, /*kernel_size=*/3).padding(1)),
+            torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, 3).padding(1)),
             torch::nn::BatchNorm2d(128),
             torch::nn::ReLU()
     );
 
     value = torch::nn::Sequential(
-            torch::nn::Conv2d(torch::nn::Conv2dOptions(128, 2, /*kernel_size=*/1)),
+            torch::nn::Conv2d(torch::nn::Conv2dOptions(128, 2, 1)),
             torch::nn::BatchNorm2d(2),
             torch::nn::ReLU(),
             torch::nn::Flatten(),
@@ -27,12 +27,12 @@ GobangCNN::GobangCNN() {
     );
 
     policy = torch::nn::Sequential(
-            torch::nn::Conv2d(torch::nn::Conv2dOptions(128, 4, /*kernel_size=*/1)),
+            torch::nn::Conv2d(torch::nn::Conv2dOptions(128, 4, 1)),
             torch::nn::BatchNorm2d(4),
             torch::nn::ReLU(),
             torch::nn::Flatten(),
             torch::nn::Linear(4 * 15 * 15, 15 * 15),
-            torch::nn::Softmax(/*dim=*/1)
+            torch::nn::Softmax(1)
     );
 
     // 注册模块
