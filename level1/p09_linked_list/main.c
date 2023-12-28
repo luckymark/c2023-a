@@ -24,7 +24,7 @@ _Bool insertList(Node head,int element,int index){
 
 _Bool deleteList(Node head,int index){
     if(index<1) return 0;
-    while(index--){
+    while(--index){
         head=head->next;
         if(head==NULL) return 0;
     }
