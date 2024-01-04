@@ -1,4 +1,6 @@
-/.idea/
-/cmake-build-debug/
+*/.idea/
+*/cmake-build-debug/
 
 *.exe
+sqlite-source-code
+test.c
