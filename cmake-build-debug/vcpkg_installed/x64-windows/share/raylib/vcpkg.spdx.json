@@ -1,0 +1,154 @@
+{
+  "$schema": "https://raw.githubusercontent.com/spdx/spdx-spec/v2.2.1/schemas/spdx-schema.json",
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "documentNamespace": "https://spdx.org/spdxdocs/raylib-x64-windows-4.5.0#2-3baf287b-9308-4e16-a244-2d0e191259ce",
+  "name": "raylib:x64-windows@4.5.0#2 58ac027faf563badb766448681408e712de08e95ba5c28a7449f392c1146e6f9",
+  "creationInfo": {
+    "creators": [
+      "Tool: vcpkg-27de5b69dac4b6fe8259d283cd4011e6d20a84ce"
+    ],
+    "created": "2023-12-24T03:31:10Z"
+  },
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "GENERATES",
+      "relatedSpdxElement": "SPDXRef-binary"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-0"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-1"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-2"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-3"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "GENERATED_FROM",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-0",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-2",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-3",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    }
+  ],
+  "packages": [
+    {
+      "name": "raylib",
+      "SPDXID": "SPDXRef-port",
+      "versionInfo": "4.5.0#2",
+      "downloadLocation": "git+https://github.com/Microsoft/vcpkg@8481bb808a6e0cdd0862e22df7b59cc0e13542cc",
+      "homepage": "https://github.com/raysan5/raylib",
+      "licenseConcluded": "Zlib",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "description": "A simple and easy-to-use library to enjoy videogames programming",
+      "comment": "This is the port (recipe) consumed by vcpkg."
+    },
+    {
+      "name": "raylib:x64-windows",
+      "SPDXID": "SPDXRef-binary",
+      "versionInfo": "58ac027faf563badb766448681408e712de08e95ba5c28a7449f392c1146e6f9",
+      "downloadLocation": "NONE",
+      "licenseConcluded": "Zlib",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "This is a binary package built by vcpkg."
+    },
+    {
+      "SPDXID": "SPDXRef-resource-1",
+      "name": "raysan5/raylib",
+      "downloadLocation": "git+https://github.com/raysan5/raylib@4.5.0",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a959abbb577a8951251a469d6505093fd20988444dcf055e26cb0b484ef4024211b2cca45187accbd465c56bc50e02d450b6f7f7cfde2cdaedcdce422f80dcbc"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "fileName": "./D:/vcpkg/buildtrees/versioning_/versions/raylib/8481bb808a6e0cdd0862e22df7b59cc0e13542cc/fix-linkGlfw.patch",
+      "SPDXID": "SPDXRef-file-0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f2be76d0d844c47760287ce6cb462d65e5d914852fbe6b33cec843f6985df537"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./D:/vcpkg/buildtrees/versioning_/versions/raylib/8481bb808a6e0cdd0862e22df7b59cc0e13542cc/fix-project-version.patch",
+      "SPDXID": "SPDXRef-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b5d71f9d93b806bfc8ca432b7a2509ef691de6231a3180b73c6d0d3f7755a898"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./D:/vcpkg/buildtrees/versioning_/versions/raylib/8481bb808a6e0cdd0862e22df7b59cc0e13542cc/portfile.cmake",
+      "SPDXID": "SPDXRef-file-2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "48cb4294923266e6b996f02c871a305138d66517225d371fc6ff19fb19b5c447"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./D:/vcpkg/buildtrees/versioning_/versions/raylib/8481bb808a6e0cdd0862e22df7b59cc0e13542cc/vcpkg.json",
+      "SPDXID": "SPDXRef-file-3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3bba132aa643abc83e535f8284b328d16d7945d680eb12f11e91fab06d02f530"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    }
+  ]
+}
