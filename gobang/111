@@ -1,0 +1,69 @@
+if(k-i<=0 && k-i+10>=0)
+if(k-j<=0 && k-j+10>=0)
+if(k-i<=0 && k-i+10>=0 && k-j<=0 && k-j+10>=0)
+if(k-i<=0 && k-i+10>=0 && k+j-4>=0 && k+j-14<=0)
+//为当前MAX节点赋值
+Node* Give_Max_Value(int map[][15])
+{
+    Node* MAX = (Node*) malloc(sizeof(Node));
+    MAX->beta=-100000;
+    int alpha;
+    int pre_alpha=-100000;
+    for(int i=0;i<15;i++)
+    {
+        for(int j=0;j<15;j++)
+        {
+            if(Is_drop(i,j,map))
+            {
+                map[i][j]=-1;
+                alpha = Search(pre_alpha,map);
+                pre_alpha=(alpha>=pre_alpha? alpha:pre_alpha);
+                map[i][j]=0;
+                if(alpha>=MAX->beta)
+                {
+                    MAX->beta=alpha;
+                    MAX->x=i;
+                    MAX->y=j;
+                }
+            }
+        }
+    }
+    return MAX;
+}
+//遍历子节点
+int Search(int pre_alpha,int map[][15])
+{
+    int score;
+    int alpha=100000;
+    for(int i=0;i<15;i++)
+    {
+        for(int j=0;j<15;j++)
+        {
+            if(Is_drop(i,j,map))
+            {
+                map[i][j]=1;
+                score=Evaluate(map);
+                map[i][j]=0;
+                if(score<pre_alpha)
+                {
+                    return -100000;
+                }
+                alpha=(score<=alpha? score:alpha);
+            }
+        }
+    }
+    return alpha;
+}
+
+
+
+
+
+
+
+Node* pt=Give_Max_Value(map);
+            int Max_Value=pt->beta;
+            int x= pt->x;
+            int y= pt->y;
+            printf("%d x=%d y=%d\n",Max_Value,x,y);
+            map[x][y]=-1;
